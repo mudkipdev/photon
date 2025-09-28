@@ -3,7 +3,7 @@
   import { client } from '$lib/client/lemmy.svelte'
   import UserAutocomplete from '$lib/components/lemmy/user/UserAutocomplete.svelte'
   import UserLink from '$lib/components/lemmy/user/UserLink.svelte'
-  import { Header } from '$lib/components/ui/layout'
+  import { CommonList, Header } from '$lib/components/ui/layout'
   import Placeholder from '$lib/components/ui/Placeholder.svelte'
   import { t } from '$lib/i18n/translations.js'
   import { errorMessage } from '$lib/lemmy/error.js'
@@ -58,19 +58,21 @@
         description={$t('routes.admin.team.empty.description')}
       />
     {:else}
-      {#each data.site?.admins ?? [] as admin (admin.person.id)}
-        <div class="py-3 flex items-center justify-between">
-          <UserLink avatar showInstance={false} user={admin.person} />
-          <Button
-            onclick={() => {
-              removeAdmin(admin.person.id, false)
-            }}
-            size="square-md"
-          >
-            <Icon src={Trash} mini size="16" />
-          </Button>
-        </div>
-      {/each}
+      <CommonList items={data.site?.admins ?? []}>
+        {#snippet item(admin)}
+          <div class="flex items-center justify-between">
+            <UserLink avatar showInstance={false} user={admin.person} />
+            <Button
+              onclick={() => {
+                removeAdmin(admin.person.id, false)
+              }}
+              size="square-md"
+            >
+              <Icon src={Trash} mini size="16" />
+            </Button>
+          </div>
+        {/snippet}
+      </CommonList>
     {/if}
   </ul>
   <form
