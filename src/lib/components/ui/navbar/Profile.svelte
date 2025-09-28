@@ -1,10 +1,5 @@
 <script lang="ts">
   import { notifications, profile } from '$lib/auth.svelte'
-  import {
-    amModOfAny,
-    isAdmin,
-  } from '$lib/components/lemmy/moderation/moderation'
-
   import SiteCard from '$lib/components/lemmy/instance/InstanceCard.svelte'
   import { t } from '$lib/i18n/translations'
   import { site } from '$lib/client/lemmy.svelte'
@@ -68,7 +63,7 @@
       </Badge>
     {/if}
   </MenuButton>
-  {#if amModOfAny(profile.current.user)}
+  {#if profile.isMod()}
     <MenuButton href="/moderation" icon={ShieldCheck}>
       {$t('routes.moderation.feed')}
       {#snippet suffix()}
@@ -76,7 +71,7 @@
       {/snippet}
     </MenuButton>
   {/if}
-  {#if profile.current.user && isAdmin(profile.current.user)}
+  {#if profile.isAdmin}
     <MenuButton href="/admin/applications" icon={ServerStack}>
       {$t('routes.admin.applications.title')}
       {#snippet suffix()}

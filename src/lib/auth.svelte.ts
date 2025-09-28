@@ -1,9 +1,5 @@
 import { browser } from '$app/environment'
 import { env } from '$env/dynamic/public'
-import {
-  amModOfAny,
-  isAdmin,
-} from '$lib/components/lemmy/moderation/moderation.js'
 import { DEFAULT_INSTANCE_URL } from '$lib/instance.svelte.js'
 import { client, getClient, site } from '$lib/client/lemmy.svelte'
 import { instanceToURL, moveItem } from '$lib/util.svelte'
@@ -210,11 +206,7 @@ class Profile {
     const { user, jwt } = profile.current
     if (!user || !jwt) throw new Error('checkInbox() called with invalid user')
 
-    const notifs = await getNotificationCount(
-      jwt,
-      amModOfAny(user) ?? false,
-      user ? isAdmin(user) : false,
-    )
+    const notifs = await getNotificationCount(jwt, this.isMod(), this.isAdmin)
 
     return {
       inbox: notifs.unreads,
@@ -269,6 +261,26 @@ class Profile {
     } catch {
       /* empty */
     }
+  }
+
+  isMod(community?: Community) {
+    if (community)
+      return (
+        (this.#current.user?.moderates.some(
+          (i) => i.community.id == community.id,
+        ) ||
+          (community.local && this.isAdmin)) ??
+        false
+      )
+    else return (this.#current.user?.moderates.length ?? 0) > 0
+  }
+
+  get isAdmin() {
+    return (
+      site.data?.admins.some(
+        (i) => i.person.id == this.#current.user?.local_user_view.person.id,
+      ) ?? false
+    )
   }
 
   mainEffect = $effect.root(() => {

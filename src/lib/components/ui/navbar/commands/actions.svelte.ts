@@ -1,10 +1,6 @@
 import { goto } from '$app/navigation'
 import { page } from '$app/state'
 import { profile as currentProfile, type ProfileInfo } from '$lib/auth.svelte'
-import {
-  amModOfAny,
-  isAdmin,
-} from '$lib/components/lemmy/moderation/moderation'
 import { t } from '$lib/i18n/translations'
 import { type ResumableItem } from '$lib/lemmy/item'
 import { settings } from '$lib/settings.svelte'
@@ -92,7 +88,7 @@ export function getGroups(
           name: t.get('nav.communities'),
           icon: GlobeAlt,
         },
-        ...(amModOfAny(profile.user)
+        ...(currentProfile.isMod()
           ? [
               {
                 href: '/moderation',
@@ -101,7 +97,7 @@ export function getGroups(
               },
             ]
           : []),
-        ...(profile.user && isAdmin(profile.user)
+        ...(currentProfile.isAdmin
           ? [
               {
                 href: '/admin',

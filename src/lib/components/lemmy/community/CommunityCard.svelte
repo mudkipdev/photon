@@ -69,10 +69,6 @@
   import { profile } from '$lib/auth.svelte.js'
   import { client, getClient } from '$lib/client/lemmy.svelte'
   import type { CommunityModeratorView, CommunityView } from '$lib/client/types'
-  import {
-    amMod,
-    isAdmin,
-  } from '$lib/components/lemmy/moderation/moderation.js'
   import Markdown from '$lib/components/markdown/Markdown.svelte'
   import Avatar from '$lib/components/ui/Avatar.svelte'
   import EndPlaceholder from '$lib/components/ui/EndPlaceholder.svelte'
@@ -225,7 +221,7 @@
         />
       {/if}
     {/if}
-    {#if profile.current?.user && amMod(profile.current.user, community_view.community)}
+    {#if profile.isMod(community_view.community)}
       <SidebarButton
         href="/c/{fullCommunityName(
           community_view.community.name,
@@ -250,7 +246,7 @@
         {$t('cards.community.modlog')}
       </MenuButton>
       {#if profile.current?.jwt}
-        {#if profile.current.user && amMod(profile.current.user, community_view.community)}
+        {#if profile.isMod(community_view.community)}
           <MenuButton
             color="success-subtle"
             href="/moderation?community={community_view.community.id}"
@@ -280,7 +276,7 @@
             {$t('cards.community.blockInstance')}
           </MenuButton>
         {/if}
-        {#if profile.current?.user && isAdmin(profile.current.user)}
+        {#if profile.isAdmin}
           <MenuButton
             color="danger-subtle"
             onclick={() =>

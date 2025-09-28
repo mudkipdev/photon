@@ -38,7 +38,6 @@
   } from 'svelte-hero-icons'
   import Subscribe from '../../../../routes/communities/Subscribe.svelte'
   import ItemList from '../generic/ItemList.svelte'
-  import { amMod, isAdmin } from '../moderation/moderation'
   import { block, blockInstance, purgeCommunity } from './CommunityCard.svelte'
   import CommunityFlair from './CommunityFlair.svelte'
 
@@ -217,7 +216,7 @@
         <Icon src={Newspaper} size="16" mini />
         {$t('cards.community.modlog')}
       </MenuButton>
-      {#if profile.current.user && amMod(profile.current.user, community)}
+      {#if profile.isMod(community)}
         <MenuButton
           color="success-subtle"
           href="/moderation?community={community.id}"
@@ -237,17 +236,15 @@
             ? $t('cards.community.unblock')
             : $t('cards.community.block')}
         </MenuButton>
-        {#if profile.current?.user}
-          <MenuButton
-            color="danger-subtle"
-            size="lg"
-            onclick={() => blockInstance(community.instance_id)}
-            icon={BuildingOffice2}
-          >
-            {$t('cards.community.blockInstance')}
-          </MenuButton>
-        {/if}
-        {#if profile.current?.user && isAdmin(profile.current.user)}
+        <MenuButton
+          color="danger-subtle"
+          size="lg"
+          onclick={() => blockInstance(community.instance_id)}
+          icon={BuildingOffice2}
+        >
+          {$t('cards.community.blockInstance')}
+        </MenuButton>
+        {#if profile.isAdmin}
           <MenuButton
             color="danger-subtle"
             onclick={() =>

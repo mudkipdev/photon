@@ -17,7 +17,6 @@
   import { Fire, Trash } from 'svelte-hero-icons'
   import { Comment } from '../comment'
   import { Post } from '../post'
-  import { amMod, isAdmin } from './moderation'
 
   interface Props {
     open: boolean
@@ -216,7 +215,7 @@
         bind:value={reason}
       />
 
-      {#if !removed && profile.current?.user && (amMod(profile.current.user, item.community) || (isAdmin(profile.current.user) && item.community.local))}
+      {#if !removed}
         <Switch bind:checked={commentReason}>
           {$t('moderation.removeSubmission.withReason')}
         </Switch>

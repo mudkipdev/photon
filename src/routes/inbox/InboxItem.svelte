@@ -22,7 +22,7 @@
   let loading = $state(false)
 
   async function markAsRead(isRead: boolean) {
-    if (!profile.current?.jwt) return
+    if (isRead && item.read) return
 
     loading = true
 
@@ -112,6 +112,7 @@
           size="sm"
           rounding="pill"
           class="shrink-0"
+          onclick={() => markAsRead(true)}
         >
           {$t('common.jump')}
         </Button>
@@ -142,6 +143,7 @@
           : `/comment/${item.item.comment.id}`}
         size="sm"
         rounding="pill"
+        onclick={() => markAsRead(true)}
       >
         {$t('common.jump')}
       </Button>

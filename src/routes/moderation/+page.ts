@@ -1,5 +1,4 @@
 import { profile } from '$lib/auth.svelte'
-import { isAdmin } from '$lib/components/lemmy/moderation/moderation.js'
 import { getClient } from '$lib/client/lemmy.svelte'
 import { isCommentView, isPostView } from '$lib/lemmy/item'
 import {
@@ -30,7 +29,7 @@ export async function load({ url, fetch }) {
     community_id: community,
   }
 
-  const admin = profile.current?.user ? isAdmin(profile!.current.user!) : false
+  const admin = profile.isAdmin
 
   const [posts, comments, messages] = await Promise.all([
     client.listPostReports({

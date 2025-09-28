@@ -3,7 +3,6 @@ import type {
   Comment,
   CommentView,
   Community,
-  MyUserInfo,
   Person,
   PostView,
   PrivateMessageView,
@@ -104,15 +103,6 @@ export async function viewVotes(item: PostView | CommentView) {
     },
   }))
 }
-
-export const amMod = (me: MyUserInfo, community: Community) =>
-  me.moderates.map((c) => c.community.id).includes(community.id) ||
-  (community.local && isAdmin(me))
-
-export const amModOfAny = (me?: MyUserInfo) =>
-  me && (me.moderates.length > 0 || isAdmin(me))
-
-export const isAdmin = (me: MyUserInfo) => me.local_user_view.person.admin
 
 export const removalTemplate = (
   input: string,

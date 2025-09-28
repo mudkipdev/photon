@@ -2,7 +2,7 @@
   import { profile } from '$lib/auth.svelte'
   import { client } from '$lib/client/lemmy.svelte'
   import type { PersonView } from '$lib/client/types'
-  import { ban, isAdmin } from '$lib/components/lemmy/moderation/moderation'
+  import { ban } from '$lib/components/lemmy/moderation/moderation'
   import { t } from '$lib/i18n/translations'
   import { blockUser, isBlocked } from '$lib/lemmy/user'
   import {
@@ -91,7 +91,7 @@
         {$t('form.profile.matrix')}
       </Button>
     {/if}
-    {#if isAdmin(profile.current?.user)}
+    {#if profile.isAdmin}
       <Menu class="ml-auto" placement="bottom-end">
         {#snippet target(attachment)}
           <Button

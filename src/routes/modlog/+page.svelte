@@ -4,7 +4,6 @@
   import { profile } from '$lib/auth.svelte.js'
   import { client } from '$lib/client/lemmy.svelte'
   import { CommunityLink } from '$lib/components/lemmy/community'
-  import { isAdmin } from '$lib/components/lemmy/moderation/moderation.js'
   import ObjectAutocomplete from '$lib/components/lemmy/ObjectAutocomplete.svelte'
   import { postLink } from '$lib/components/lemmy/post'
   import UserAutocomplete from '$lib/components/lemmy/user/UserAutocomplete.svelte'
@@ -197,7 +196,7 @@
       onselect={(e) =>
         searchParam(page.url, 'user', e?.id.toString() ?? '', 'page')}
     />
-    {#if profile.current?.user && isAdmin(profile.current?.user)}
+    {#if profile.isAdmin}
       <UserAutocomplete
         placeholder="Filter by moderator"
         listing_type="All"

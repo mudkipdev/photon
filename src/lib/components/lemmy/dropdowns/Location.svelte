@@ -11,7 +11,6 @@
     Newspaper,
     ShieldCheck,
   } from 'svelte-hero-icons'
-  import { amModOfAny } from '../moderation/moderation'
   import { t } from '$lib/i18n/translations'
   import Option from 'mono-svelte/forms/select/Option.svelte'
   import type { SelectProps } from 'mono-svelte/forms/select/Select.svelte'
@@ -65,11 +64,7 @@
   >
     {$t('filter.location.subscribed')}
   </Option>
-  <Option
-    value="ModeratorView"
-    disabled={!profile.current?.jwt || !amModOfAny(profile.current?.user)}
-    icon={ShieldCheck}
-  >
+  <Option value="ModeratorView" disabled={!profile.isMod()} icon={ShieldCheck}>
     {$t('filter.location.moderator')}
   </Option>
   {@render children?.()}

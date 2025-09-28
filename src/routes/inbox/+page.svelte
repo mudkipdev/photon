@@ -105,10 +105,26 @@
 {:else}
   <CommonList items={data.inbox.value} size="md">
     {#snippet item(item)}
-      <InboxItem {item} />
+      <div
+        class={[
+          !item.read && 'unread-inbox-item',
+        ]}
+      >
+        <InboxItem {item} />
+      </div>
     {/snippet}
   </CommonList>
 {/if}
+
+<style>
+  :global(.unread-inbox-item) {
+    background-color: rgb(147 197 253 / 0.1);
+  }
+
+  :global(.dark .unread-inbox-item) {
+    background-color: rgb(59 130 246 / 0.05);
+  }
+</style>
 {#if !(data.page == 1 && (data?.inbox?.value.length ?? 0) == 0)}
   <Fixate placement="bottom">
     <Pageination
