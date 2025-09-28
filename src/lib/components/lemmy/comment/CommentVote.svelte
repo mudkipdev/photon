@@ -5,7 +5,7 @@
   import { t } from '$lib/i18n/translations'
   import { errorMessage } from '$lib/lemmy/error'
   import { settings } from '$lib/settings.svelte'
-  import { buttonColor, toast } from 'mono-svelte'
+  import { toast } from 'mono-svelte'
   import { ChevronDown, ChevronUp, Icon } from 'svelte-hero-icons'
   import { backOut } from 'svelte/easing'
   import { fly } from 'svelte/transition'
@@ -74,8 +74,8 @@
   <button
     onclick={() => castVote(vote == targetNum ? 0 : targetNum)}
     class={[
-      'flex items-center gap-0.5 transition-colors relative cursor-pointer h-full p-1.5',
-      'first:rounded-l-md last:rounded-r-md',
+      'flex items-center gap-0.5 transition-colors relative cursor-pointer px-1.5 py-1',
+      'first:rounded-l-3xl last:rounded-r-3xl',
       'last:flex-row-reverse',
       vote == targetNum
         ? shouldShowVoteColor(
@@ -112,14 +112,13 @@
 
 <div
   class={[
-    'h-full relative flex items-center overflow-hidden rounded-md hover:bg-transparent font-medium hover:dark:bg-transparent',
-    buttonColor.ghost,
+    'h-full relative flex items-center overflow-hidden rounded-full font-medium',
     voteRatio < 85 && settings.voteRatioBar && 'vote-ratio',
+    'divide-x divide-slate-200 dark:divide-zinc-800 border border-slate-200 dark:border-zinc-800',
   ]}
   style="--vote-ratio: {voteRatio}%;"
 >
   {@render voteButton(upvotes, 'upvote', vote)}
-  <div class="h-full p-0! border-l border-slate-200 dark:border-zinc-800"></div>
   {#if site.data?.site_view.local_site.enable_downvotes ?? true}
     {@render voteButton(downvotes, 'downvote', vote)}
   {/if}
