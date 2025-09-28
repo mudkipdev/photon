@@ -96,6 +96,7 @@ const regexes = {
   user: /^https:\/\/([a-zA-Z0-9.-]+)(\/u\/)([a-zA-Z0-9.-_]+)$/i,
   community: /^https:\/\/([a-zA-Z0-9.-]+)(\/c\/)([a-zA-Z0-9.-_]+)$/i,
   implicitUser: /^mailto:([a-z0-9_.-]+)@(([\da-z.-]+)\.([a-z]{2,63}))/i,
+  bareCommunity: /^([a-z0-9_.-]+)@([\da-z.-]+)\.([a-z]{2,63})$/i,
 }
 
 /**
@@ -109,6 +110,11 @@ export const photonify = (link) => {
     // If the match[3] includes @, the URL included an instance already, so don't add one.
     if (match?.[3].includes('@')) return `/c/${match?.[3]}`
     else return `/c/${match?.[3]}@${match?.[1]}`
+  }
+  if (regexes.bareCommunity.test(link)) {
+    const match = link.match(regexes.bareCommunity)
+    if (!match) return
+    return `/c/${match?.[1]}@${match?.[2]}.${match?.[3]}`
   }
   if (regexes.post.test(link)) {
     const match = link.match(regexes.post)
