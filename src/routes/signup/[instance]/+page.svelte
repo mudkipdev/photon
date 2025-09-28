@@ -51,13 +51,13 @@
   let username = $state(''),
     password = $state(''),
     passwordVerify = $state(''),
-    captcha: GetCaptchaResponse | null = $state(null),
-    verifyCaptcha: string | undefined = $state(undefined),
-    application: string = $state(''),
-    submitting: boolean = $state(false),
-    honeypot: string | undefined = $state(undefined),
-    nsfw: boolean = $state(false),
-    verifying: boolean = $state(false)
+    captcha = $state<GetCaptchaResponse>(),
+    verifyCaptcha = $state<string>(),
+    application = $state(''),
+    submitting = $state(false),
+    honeypot = $state<string>(),
+    nsfw = $state(false),
+    verifying = $state(false)
 
   const getCaptcha = async () =>
     (captcha = await getClient(instance, fetch).getCaptcha())
@@ -97,7 +97,7 @@
         if (res.verify_email_sent) return (stage = 'verify')
 
         if (registrationMode == 'RequireApplication')
-          return stage == 'application'
+          return (stage = 'application')
       } else {
         throw new Error($t('toast.failSignup'))
       }
