@@ -27,9 +27,21 @@
     {@render summary?.({ open })}
   </button>
   {@render extended?.()}
-  {#if open}
-    <div transition:slide={{ axis: 'y', easing: expoOut, duration: 300 }}>
-      {@render children?.({ open })}
-    </div>
-  {/if}
+  <div class="expand" inert={!open}>
+    {@render children?.({ open })}
+  </div>
 </div>
+
+<style>
+  .expand {
+    display: grid;
+    grid-template-rows: 0fr;
+    grid-template-columns: 100%;
+    overflow: hidden;
+    transition: grid-template-rows 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+  }
+
+  .expand > :global(*) {
+    min-height: 0;
+  }
+</style>
