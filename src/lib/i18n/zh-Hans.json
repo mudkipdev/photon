@@ -636,7 +636,7 @@
             "title": "Photon",
             "theming": {
                 "title": "主题",
-                "description": "自定义 Photon 的颜色。",
+                "description": "自定义 RePhoton 的颜色。",
                 "link": "转到主题"
             },
             "colorscheme": {

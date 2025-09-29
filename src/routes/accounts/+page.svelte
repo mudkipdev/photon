@@ -73,7 +73,7 @@
         </span>
       </div>
     </div>
-    <p>This removes the account from Photon, it does not delete the account.</p>
+    <p>This removes the account from RePhoton, it does not delete the account.</p>
     <div class="flex flex-row gap-2 items-center">
       <Button size="lg" class="flex-1" onclick={() => (removing.shown = false)}>
         Cancel

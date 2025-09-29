@@ -16,11 +16,11 @@
       },
       {
         href: '/util/instance',
-        name: 'Photon instance',
+        name: 'RePhoton instance',
       },
       {
         href: '/util/photonify',
-        name: 'Photonify Links',
+        name: 'RePhotonify Links',
       },
       {
         href: '/util/placeholder',

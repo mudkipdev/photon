@@ -685,7 +685,7 @@
             "title": "Photon",
             "theming": {
                 "title": "Temas",
-                "description": "Personaliza as cores do Photon.",
+                "description": "Personaliza as cores do RePhoton.",
                 "link": "Ver os temas"
             },
             "duplicateTitles": {

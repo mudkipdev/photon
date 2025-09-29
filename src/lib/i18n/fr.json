@@ -503,7 +503,7 @@
             },
             "view": {
                 "cozy": "Afficher les publications avec de grandes images, des embeds riches, et des corps de publication plus longues.",
-                "legacy": "Le vieux look de Photon, similaire en aspect au theme \"confortable\".",
+                "legacy": "Le vieux look de RePhoton, similaire en aspect au theme \"confortable\".",
                 "title": "Style de publication",
                 "list": "Afficher les publications dans une liste, avec le corps des publications et les medias compact.",
                 "compact": "Afficher les publications dans une liste, sans corps de publications et moins d'espacement."

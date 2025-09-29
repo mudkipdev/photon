@@ -62,7 +62,7 @@
             "title": "Photon",
             "theming": {
                 "title": "テーマ設定",
-                "description": "Photonの色合いを変える。",
+                "description": "RePhotonの色合いを変える。",
                 "link": "テーマに行く"
             },
             "colorscheme": {

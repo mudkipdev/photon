@@ -62,7 +62,7 @@
         "guest": "Convidado",
         "moveDown": "Mover para baixo",
         "logout": "Terminar Sessão",
-        "versionGate": "Esta versão do Photon suporta instâncias rodando a versão {{version}} ou acima."
+        "versionGate": "Esta versão do RePhoton suporta instâncias rodando a versão {{version}} ou acima."
     },
     "filter": {
         "location": {

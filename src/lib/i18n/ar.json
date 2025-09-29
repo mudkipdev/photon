@@ -27,7 +27,7 @@
                 "light": "فاتح"
             },
             "theme": "المظهر",
-            "about": "عن فوتون",
+            "about": "عن RePhoton",
             "source": "مصدر",
             "donate": "تبرع",
             "instance": "الخادوم"
@@ -60,7 +60,7 @@
         "guest": "صيف",
         "login": "تسجيل الدخول",
         "resetColor": "إعادة ضبط اللون",
-        "versionGate": "هذا الإصدار الفوتون يقبل الخوادم بالإصدار {{version}} أو اعلى."
+        "versionGate": "هذا الإصدار RePhoton يقبل الخوادم بالإصدار {{version}} أو اعلى."
     },
     "filter": {
         "location": {

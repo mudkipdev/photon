@@ -7,7 +7,7 @@
                 "info": "Aby dołączyć do tej instancji, musisz wypełnić aplikację i poczekać na akceptację. Otrzymasz email, jeśli twoja aplikacja zostanie zaakceptowana.",
                 "notice": "Twoja rejestracja jest w toku. Gdy administracja ją rozpatrzy, otrzymasz maila, jeżeli została zaakceptowana. Wtedy możesz się zalogować."
             },
-            "title": "Zarejestruj się",
+            "title": "RePhoton",
             "description": "Wybierz instancję, która Cię interesuje, lub wprowadź adres URL ręcznie.",
             "info": "Instancja to serwer, na którym będzie hostowane Twoje konto, ale nadal możesz uzyskiwać dostęp do treści z innych instancji.",
             "chooseInstance": "Wybierz instancję",
@@ -732,7 +732,7 @@
                     "description": "Użyj układu RTL dla języków RTL."
                 }
             },
-            "title": "Photon",
+            "title": "RePhoton",
             "theming": {
                 "title": "Motywy",
                 "description": "Dostosuj kolory interfejsu.",
@@ -923,7 +923,7 @@
             }
         },
         "donate": {
-            "description": "Ta aplikacja jest otwartym oprogramowaniem, i dołożyłem wszelkich starań w jej rozwinięcie i utrzymywanie. Jeżeli chcesz wesprzeć dalszy rozwój, możesz do niego dopłacić, lub po prostu polecić innym!"
+            "description": "RePhoton jest otwartym oprogramowaniem, i dołożyłem wszelkich starań w jego rozwinięcie i utrzymywanie. Jeżeli chcesz wesprzeć dalszy rozwój, możesz do niego dopłacić, lub po prostu polecić innym!"
         },
         "account": {
             "title": "Konto"

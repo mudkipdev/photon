@@ -246,10 +246,10 @@
     <span>Slate is for light theme, Zinc is for dark</span>
     <span>
       You can share themes at <a
-        href="/c/photon@lemdro.id"
+        href="/c/rephoton@lemdro.id"
         class="text-sky-600 dark:text-sky-500 hover:underline"
       >
-        photon@lemdro.id
+        rephoton@lemdro.id
       </a>
     </span>
   </div>

@@ -11,32 +11,22 @@
   </div>
   <h1 class="text-2xl font-bold leading-8">About</h1>
   <p class="my-3">
-    <strong>Photon</strong>
+    <strong>RePhoton</strong>
     is a replacement user interface for Lemmy, with more features and modern design.
   </p>
   <h1 class="text-2xl font-bold leading-8">Links</h1>
   <ul class="list-disc pl-4 my-3">
     <li>
-      <Link highlight href="https://github.com/Xyphyn/photon">Github</Link>
+      <Link highlight href="https://github.com/mudkipdev/rephoton">Github</Link>
     </li>
     <li>
-      <Link
-        highlight
-        href="https://photon.xylight.dev/c/photon@lemmy.xylight.dev"
-      >
-        Community
-      </Link>
-    </li>
-    <li>
-      <Link href="https://xylight.dev" highlight>Xylight's portfolio</Link>
-    </li>
-    <li>
-      <Link href="https://buymeacoffee.com/xylight" highlight>Donate</Link>
+      <Link href="https://mudkip.dev" highlight>mudkip's portfolio</Link>
     </li>
   </ul>
   <h1 class="text-2xl font-bold leading-10">Credits</h1>
   <div class="flex flex-row flex-wrap gap-6 items-center w-full">
-    <Profile name="Xylight" description="Main developer" />
+    <Profile name="mudkip" description="Main developer" link="/u/mudkip@lemdro.id" />
+    <Profile name="Xylight" description="Original developer" link="/u/xylight@lemdro.id" />
     <Profile
       name="Cole"
       badge="lemdro.id"
@@ -127,3 +117,4 @@
     <span>...and you, for using this app!</span>
   </div>
 </div>
+>

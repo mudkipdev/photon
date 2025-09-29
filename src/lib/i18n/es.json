@@ -662,7 +662,7 @@
                 "title": "Estilo de las publicaciones",
                 "cozy": "Mostrar las publicaciones con imágenes grandes, contenido embebido y área de contenido más extensa.",
                 "compact": "Mostrar las pubicaciones en una lista, sin su contenido y espaciado más ajustado.",
-                "legacy": "La vieja apariencia de Photon.",
+                "legacy": "La vieja apariencia de RePhoton.",
                 "list": "Muestra las publicaciones en una lista, con su contenido y multimedia en tamaño compacto."
             },
             "sort": {

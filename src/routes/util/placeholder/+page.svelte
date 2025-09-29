@@ -9,7 +9,7 @@
 
 <h1 class="font-bold text-2xl">Placeholders</h1>
 <p>
-  Photon randomly generates placeholders for use in text inputs and stuff. If
+  RePhoton randomly generates placeholders for use in text inputs and stuff. If
   you have "Random Placeholders" disabled in settings, they will be empty.
 </p>
 

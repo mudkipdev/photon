@@ -182,11 +182,8 @@
       </span>
     </div>
     {#if env.PUBLIC_XYLIGHT_MODE?.toLowerCase() == 'true'}
-      <Link highlight href="https://github.com/xyphyn/photon">
+      <Link highlight href="https://github.com/mudkipdev/rephoton">
         {$t('nav.menu.source')}
-      </Link>
-      <Link highlight href="https://buymeacoffee.com/xylight">
-        {$t('nav.menu.donate')}
       </Link>
     {/if}
   </footer>

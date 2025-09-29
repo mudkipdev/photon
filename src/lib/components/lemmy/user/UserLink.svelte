@@ -22,7 +22,7 @@
   ):
     | {
         classes: string
-        icon: 'photon' | IconSource
+        icon: 'rephoton' | IconSource
         iconClass?: string
       }
     | false => {
@@ -166,3 +166,4 @@
     text-overflow: ellipsis;
   }
 </style>
+>

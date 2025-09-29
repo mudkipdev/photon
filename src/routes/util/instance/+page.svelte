@@ -7,12 +7,12 @@
   } from '$lib/instance.svelte'
 </script>
 
-<Header pageHeader>Photon instance</Header>
+<Header pageHeader>RePhoton instance</Header>
 <pre>
-  photon version: {__VERSION__}
-  
+  rephoton version: {__VERSION__}
+
   linked instance: {LINKED_INSTANCE_URL ?? 'none'}
   default instance: {DEFAULT_INSTANCE_URL}
   SSR enabled: {env.PUBLIC_SSR_ENABLED ?? 'false'}
-  default theme: {env.PUBLIC_THEME ?? "mr xylight's very awesome colors"}
+  default theme: {env.PUBLIC_THEME ?? "mudkip's very awesome colors"}
 </pre>

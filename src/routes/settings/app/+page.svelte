@@ -68,28 +68,6 @@
 </script>
 
 <CommonList>
-  {#if env.PUBLIC_XYLIGHT_MODE}
-    <Setting icon={Heart}>
-      {#snippet title()}
-        <span class="dark:text-pink-400 text-pink-600">
-          {$t('nav.menu.donate')}
-        </span>
-      {/snippet}
-      {#snippet description()}
-        {$t('settings.donate.description')}
-      {/snippet}
-      <Button
-        color="none"
-        class="bg-gradient-to-r ml-6 dark:from-pink-400 dark:to-fuchsia-400 from-pink-600 to-red-600 text-white dark:text-black"
-        href="https://buymeacoffee.com/xylight"
-        target="_blank"
-        rounding="xl"
-        icon={Heart}
-      >
-        {$t('nav.menu.donate')}
-      </Button>
-    </Setting>
-  {/if}
   <Setting icon={Language}>
     {#snippet title()}
       {$t('settings.app.lang.title')}
