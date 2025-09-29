@@ -107,7 +107,7 @@
 <li class="flex flex-col px-2 py-1 mx-auto my-1 text-xs w-full">
   <div class="flex flex-row gap-2 w-full items-center">
     <div class="flex-1">
-      <Badge color="blue-subtle" class="w-fit">RePhoton v{__VERSION__}</Badge>
+      <Badge color="blue-subtle" class="w-fit">v{__VERSION__}</Badge>
     </div>
     <Button
       onclick={() => {

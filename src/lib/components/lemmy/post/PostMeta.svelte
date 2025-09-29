@@ -73,8 +73,8 @@
     Icon,
     LockClosed,
     Megaphone,
-    PaperAirplane,
-    Pencil,
+    PencilSquare,
+    ServerStack,
     ShieldCheck,
     Tag,
     Trash,
@@ -209,31 +209,30 @@
         <button
           {@attach attachment}
           class={[
-            'row-span-2 shrink-0 mr-2 self-center group/btn',
+            'row-span-2 shrink-0 mr-1 self-center group/btn',
             'bg-slate-200 dark:bg-zinc-800 rounded-lg cursor-pointer',
           ]}
         >
           {#if community.nsfw && settings.nsfwBlur}
             <div
-              style="width: {view == 'compact' ? 24 : 32}; height: {view ==
+              style="width: {view == 'compact' ? 20 : 24}; height: {view ==
               'compact'
-                ? 24
-                : 32}"
+                ? 20
+                : 24}"
               class="bg-red-400 rounded-xl"
             ></div>
           {:else}
             <Avatar
               url={community?.icon}
-              width={view == 'compact' ? 24 : 32}
+              width={view == 'compact' ? 20 : 24}
               alt={community?.name}
-              circle={false}
-              class="group-hover/btn:scale-90 group-active/btn:scale-[.85] transition-transform"
+              circle={true}
             />
           {/if}
         </button>
       {/snippet}
       {#snippet popover(open)}
-        {#if open && community && subscribed}
+      {#if open && community && subscribed}
           <Material
             color="uniform"
             rounding="2xl"
@@ -249,57 +248,55 @@
       {/snippet}
     </Popover>
   {/if}
-  {#if showCommunity && community}
-    <CommunityLink
-      {community}
-      style="grid-area: community;"
-      class="shrink no-list-margin"
-      badges={{
-        nsfw: community.nsfw,
-      }}
-    />
-  {/if}
+
   <div
-    class="flex flex-row gap-1.5 items-center
+    class="flex flex-row gap-1 items-baseline flex-wrap
      no-list-margin {view == 'compact' && showCommunity ? 'min-sm:mx-2' : ''}"
-    style="grid-area: stats;"
+    style="grid-area: community;"
   >
+    {#if showCommunity && community}
+      <span class="text-slate-500 dark:text-zinc-500">Submitted to</span>
+      <CommunityLink
+        {community}
+        class="shrink no-list-margin"
+        badges={{
+          nsfw: community.nsfw,
+        }}
+      />
+    {/if}
     {#if user}
+      {#if showCommunity && community}
+        <span class="text-slate-500 dark:text-zinc-500">by</span>
+      {:else}
+        <span class="text-slate-500 dark:text-zinc-500">Submitted by</span>
+      {/if}
       <address class="contents not-italic">
         <UserLink avatarSize={20} {user} avatar={!showCommunity} class="shrink">
           {#snippet extraBadges()}
-            {#if badges.moderator}
-              <Icon src={ShieldCheck} size="14" mini class="text-green-500" />
-            {/if}
             {#if badges.admin}
-              <Icon src={ShieldCheck} size="14" mini class="text-red-500" />
+              <Icon src={ServerStack} size="14" mini class="text-red-500" />
+            {:else if badges.moderator}
+              <Icon src={ShieldCheck} size="14" mini class="text-slate-500 dark:text-zinc-500" />
             {/if}
           {/snippet}
         </UserLink>
       </address>
-    {/if}
-    {#if published}
-      <RelativeDate date={published} class="shrink-0" />
-    {/if}
-    {#if edited}
-      <button
-        title={$t('post.meta.lastEdited', {
-          default: formatRelativeDate(publishedToDate(edited), {
-            style: 'long',
-          }),
-        })}
-        onclick={() =>
-          modal({
-            title: $t('common.info'),
-            body: $t('post.meta.lastEdited', {
-              default: formatRelativeDate(publishedToDate(edited), {
-                style: 'long',
-              }),
+
+      {#if published}
+        <RelativeDate date={published} class="shrink-0 text-slate-500 dark:text-zinc-500" />
+      {/if}
+
+      {#if edited}
+        <button
+          title={$t('post.meta.lastEdited', {
+            default: formatRelativeDate(publishedToDate(edited), {
+              style: 'long',
             }),
           })}
-      >
-        <Icon src={Pencil} micro size="14" />
-      </button>
+        >
+          <Icon src={PencilSquare} micro size="14" />
+        </button>
+      {/if}
     {/if}
   </div>
   <div

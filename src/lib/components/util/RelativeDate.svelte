@@ -71,7 +71,7 @@
     relativeTo = undefined,
     options = {
       numeric: 'always',
-      style: 'narrow',
+      style: 'long',
     },
     style = '',
     class: clazz = '',

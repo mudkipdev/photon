@@ -47,7 +47,7 @@
     aria-label={$t('aria.pagination.nav')}
     class={[
       'flex flex-row gap-2 items-center justify-center bg-white dark:bg-zinc-900',
-      'border border-slate-200 dark:border-zinc-800 rounded-full overflow-hidden w-max mx-auto p-0.5',
+      'border border-slate-200 dark:border-zinc-800 rounded-md overflow-hidden w-max mx-auto p-0.5',
       'shadow-md',
     ]}
   >
@@ -63,7 +63,7 @@
         color="tertiary"
         onclick={() => invalidate(pageData.url)}
         title={$t('common.back')}
-        rounding="pill"
+        rounding="md"
         size="custom"
         class="text-inherit dark:text-inherit p-1"
         disabled={(cursor?.back == undefined && cursor?.next != undefined) ||
@@ -96,7 +96,7 @@
       onclick={() => invalidate(pageData.url)}
       title={$t('common.next')}
       size="custom"
-      rounding="pill"
+      rounding="md"
       class="text-inherit dark:text-inherit p-1"
       disabled={!hasMore}
     >

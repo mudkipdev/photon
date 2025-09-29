@@ -174,7 +174,7 @@
             title="Bold"
             size="custom"
             class="w-8 h-8"
-            rounding="lg"
+            rounding="md"
           >
             <Icon src={Bold} size="15" micro />
           </Button>
@@ -183,7 +183,7 @@
             title="Italic"
             size="custom"
             class="w-8 h-8"
-            rounding="lg"
+            rounding="md"
           >
             <Icon src={Italic} size="15" micro />
           </Button>
@@ -192,7 +192,7 @@
             title="Link"
             size="custom"
             class="w-8 h-8"
-            rounding="lg"
+            rounding="md"
           >
             <Icon src={Link} size="15" micro />
           </Button>
@@ -201,7 +201,7 @@
             title="Header"
             size="custom"
             class="w-8 h-8"
-            rounding="lg"
+            rounding="md"
           >
             <Icon src={H1} size="15" micro />
           </Button>
@@ -210,7 +210,7 @@
             title="Strikethrough"
             size="custom"
             class="w-8 h-8"
-            rounding="lg"
+            rounding="md"
           >
             <Icon src={Strikethrough} size="15" micro />
           </Button>
@@ -219,7 +219,7 @@
             title="Quote"
             size="custom"
             class="w-8 h-8"
-            rounding="lg"
+            rounding="md"
           >
             <span class="font-bold font-serif text-lg">"</span>
           </Button>
@@ -228,7 +228,7 @@
             title="List"
             size="custom"
             class="w-8 h-8"
-            rounding="lg"
+            rounding="md"
           >
             <Icon src={ListBullet} micro size="15" />
           </Button>
@@ -237,7 +237,7 @@
             title="Code"
             size="custom"
             class="w-8 h-8"
-            rounding="lg"
+            rounding="md"
           >
             <Icon src={CodeBracket} micro size="15" />
           </Button>
@@ -247,7 +247,7 @@
             title="Spoiler"
             size="custom"
             class="w-8 h-8"
-            rounding="lg"
+            rounding="md"
           >
             <Icon src={ExclamationTriangle} micro size="15" />
           </Button>
@@ -256,7 +256,7 @@
             title="Subscript"
             size="custom"
             class="w-8 h-8"
-            rounding="lg"
+            rounding="md"
           >
             <span class="font-bold">
               X
@@ -268,7 +268,7 @@
             title="Superscript"
             size="custom"
             class="w-8 h-8"
-            rounding="lg"
+            rounding="md"
           >
             <span class="font-bold">
               X
@@ -281,7 +281,7 @@
               title="Image"
               size="custom"
               class="w-8 h-8"
-              rounding="lg"
+              rounding="md"
             >
               <Icon src={Photo} size="15" micro />
             </Button>

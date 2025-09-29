@@ -128,7 +128,7 @@
         <div class="w-max">
           <Badge label="Lemmy version">
             <Icon src={ServerStack} micro size="14" />
-            {version}
+            v{version}
           </Badge>
         </div>
       {/if}

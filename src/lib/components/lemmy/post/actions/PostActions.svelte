@@ -197,7 +197,7 @@
           saving = false
         }}
         size="custom"
-        class="{buttonSquare} rounded-l-md rounded-r-none border-r-0"
+        class="{buttonSquare} {settings.debugInfo ? 'rounded-none' : 'rounded-l-md'} rounded-r-none border-r-0"
         color="ghost"
         rounding="none"
         loading={saving}

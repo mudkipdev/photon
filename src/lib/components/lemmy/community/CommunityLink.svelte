@@ -52,13 +52,12 @@
 
   {#if name}
     <span class="flex gap-0 items-center max-w-full min-w-0 shrink">
-      <span class="font-medium username-text">
+      <span class="username-text">
         {displayName ? community.title : community.name}
       </span>
       {#if showInstance}
         <span
-          class="text-slate-500 dark:text-zinc-500 font-normal
-          instance-text shrink {instanceClass || ''}"
+          class="instance-text shrink {instanceClass || ''}"
         >
           @{new URL(community.actor_id).hostname}
         </span>

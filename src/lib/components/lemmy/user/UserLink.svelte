@@ -30,7 +30,7 @@
       return {
         classes:
           'bg-linear-to-r bg-clip-text text-transparent from-pink-500 to-fuchsia-500 dark:from-pink-400 dark:to-purple-400',
-        icon: 'photon',
+        icon: 'rephoton',
       }
     }
 
@@ -106,14 +106,13 @@
     class:ml-0.5={avatar}
   >
     <span
-      class:font-medium={showInstance}
       class="username-text {envBadge && envBadge.classes}"
     >
       {displayName ? user.display_name || user.name : user.name}
     </span>
     {#if showInstance}
       <span
-        class="text-slate-500 dark:text-zinc-500 font-normal instance-text shrink {instanceClass ??
+        class="instance-text shrink {instanceClass ??
           ''}"
       >
         @{new URL(user.actor_id).hostname}
@@ -130,7 +129,7 @@
       <div class="text-blue-500 font-bold" title="Bot">BOT</div>
     {/if}
     {#if envBadge}
-      {#if envBadge.icon == 'photon'}
+      {#if envBadge.icon == 'rephoton'}
         <Logo width={16} />
       {:else}
         <Icon

@@ -91,12 +91,12 @@
     />
   {/if}
   <Button
-    rounding="xl"
+    rounding="md"
     color="ghost"
     onclick={() =>
       modal({ title: $t('form.post.community'), snippet: communityInfo })}
     aria-label={$t('common.info')}
-    size="square-md"
+    class="h-8.5 aspect-square @md:px-2 @md:aspect-auto"
   >
     <Icon src={InformationCircle} size="16" mini />
   </Button>
@@ -134,7 +134,7 @@
           ? $t('cards.community.subscribed')
           : $t('cards.community.subscribe')}
         color={subscribed ? 'secondary' : 'primary'}
-        rounding="xl"
+        rounding="md"
         class={[
           subscribed && 'text-slate-600 dark:text-zinc-400',
           ' h-8.5 rounded-full',
