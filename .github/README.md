@@ -5,3 +5,6 @@
 
 # RePhoton
 RePhoton is an opinionated fork of the Photon web app for Lemmy.
+
+## Changes
+- Added support for Redgifs and Hardgif embeds

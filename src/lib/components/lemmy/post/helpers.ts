@@ -52,13 +52,20 @@ export const optimizeImageURL = (
   }
 }
 
-const YOUTUBE_REGEX =
-  /^(?:https?:\/\/)?(?:www\.|m\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|shorts\/|live\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})(?:\S+)?$/
+const YOUTUBE_REGEX = /^(?:https?:\/\/)?(?:www\.|m\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|shorts\/|live\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})(?:\S+)?$/
+const HARDGIF_REGEX = /^(?:https?:\/\/)?(?:www\.)?(?:hardgif\.com\/(?:gif\/))(\w+)(#.*)?$/
+const REDGIFS_REGEX = /^(?:https?:\/\/)?(?:www\.|v3\.)?(?:redgifs\.com\/(?:ifr\/|watch\/))(\w+)(#.*)?$/
+
+export const isRedgifsLink = (url?: string): RegExpMatchArray | null => {
+  return !url ? null : url?.match?.(REDGIFS_REGEX)
+}
+
+export const isHardgifLink = (url?: string): RegExpMatchArray | null => {
+  return !url ? null : url?.match?.(HARDGIF_REGEX)
+}
 
 export const isYoutubeLink = (url?: string): RegExpMatchArray | null => {
-  if (!url) return null
-
-  return url?.match?.(YOUTUBE_REGEX)
+  return !url ? null : url?.match?.(YOUTUBE_REGEX)
 }
 
 export function postLink(post: Post) {
@@ -66,13 +73,15 @@ export function postLink(post: Post) {
 }
 
 export type MediaType = 'video' | 'image' | 'iframe' | 'embed' | 'none'
-export type IframeType = 'youtube' | 'video' | 'none'
+export type IframeType = 'youtube' | 'redgifs' | 'hardgif' | 'video' | 'none'
 
 export function mediaType(url?: string): MediaType {
   if (!url) return 'none'
   if (isImage(url)) return 'image'
   if (isVideo(url)) return 'iframe'
   if (isYoutubeLink(url)) return 'iframe'
+  if (isRedgifsLink(url)) return 'iframe'
+  if (isHardgifLink(url)) return 'iframe'
   if (canParseUrl(url)) return 'embed'
   return 'none'
 }

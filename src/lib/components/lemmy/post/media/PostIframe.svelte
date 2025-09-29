@@ -24,6 +24,28 @@
 
     return null
   }
+
+  function redgifsVideoId(url: string): string | null {
+    const regex = /^(?:https?:\/\/)?(?:www\.|v3\.)?(?:redgifs\.com\/(?:ifr\/|watch\/))(\w+)(#.*)?$/
+    const match = url.match(regex)
+
+    if (match && match[1]) {
+      return match[1]
+    }
+
+    return null
+  }
+
+  function hardgifVideoId(url: string): string | null {
+    const regex = /^(?:https?:\/\/)?(?:www\.)?(?:hardgif\.com\/(?:gif\/))(\w+)(#.*)?$/
+    const match = url.match(regex)
+
+    if (match && match[1]) {
+      return match[1]
+    }
+
+    return null
+  }
 </script>
 
 <script lang="ts">
@@ -63,6 +85,8 @@
       }
     }
 
+    if (type == 'redgifs') return `https://www.redgifs.com/ifr/${redgifsVideoId(inputUrl)}`
+    if (type == 'hardgif') return `https://hardgif.com/embedPlayer.php?post_id=${hardgifVideoId(inputUrl)}`
     return ''
   }
 
@@ -77,6 +101,18 @@
         return {
           icon: VideoCamera,
           text: 'YouTube Video',
+        }
+      }
+      case 'redgifs': {
+        return {
+          icon: VideoCamera,
+          text: 'RedGifs Video'
+        }
+      }
+      case 'hardgif': {
+        return {
+          icon: VideoCamera,
+          text: 'HardGif Video'
         }
       }
       case 'video': {
@@ -116,7 +152,7 @@
   let embedUrl = $derived(urlToEmbed(url))
 </script>
 
-<!-- 
+<!--
   @component
   Displays a video file or embedded video iframe.
 -->
