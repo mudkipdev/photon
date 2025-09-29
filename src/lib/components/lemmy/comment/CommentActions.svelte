@@ -10,12 +10,11 @@
   import { t } from '$lib/i18n/translations'
   import { deleteItem, save } from '$lib/lemmy/contentview.js'
   import { settings } from '$lib/settings.svelte'
-  import { Button, Menu, MenuButton, toast } from 'mono-svelte'
+  import { Button, toast } from 'mono-svelte'
   import {
     Bookmark,
     BookmarkSlash,
     ChatBubbleOvalLeft,
-    EllipsisHorizontal,
     Flag,
     PencilSquare,
     Share,
@@ -63,17 +62,18 @@
     vote={comment.my_vote}
     comment={comment.comment}
   />
-  <Button
-    color="tertiary"
-    rounding="md"
-    size="xs"
-    class="text-slate-500 dark:text-zinc-400 gap-1! h-7"
-    onclick={() => (replying = !replying)}
-    disabled={comment.post.locked || disabled || !profile.current.jwt}
-    icon={ChatBubbleOvalLeft}
-  >
-    {$t('comment.reply')}
-  </Button>
+  {#if !(comment.post.locked || disabled || !profile.current.jwt)}
+    <Button
+      color="tertiary"
+      rounding="md"
+      size="xs"
+      class="text-slate-500 dark:text-zinc-400 gap-1! h-7"
+      onclick={() => (replying = !replying)}
+      icon={ChatBubbleOvalLeft}
+    >
+      {$t('comment.reply')}
+    </Button>
+  {/if}
   {#if profile.current?.user && (amMod(profile.current?.user, comment.community) || isAdmin(profile.current.user))}
     <CommentModerationMenu bind:item={comment} />
   {/if}

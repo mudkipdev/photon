@@ -160,7 +160,6 @@
         published={publishedToDate(data.data.value.post.post.published)}
         edited={data.data.value.post.post.updated}
         title={data.data.value.post.post.name}
-        style="width: max-content;"
         tags={tags.tags}
       />
     </div>

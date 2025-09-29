@@ -10,35 +10,31 @@
   import { save } from '$lib/lemmy/contentview.js'
   import { settings, type View } from '$lib/settings.svelte.js'
   import type { PostView } from '$lib/client/types'
-  import { Button, Menu, Modal, Spinner, toast } from 'mono-svelte'
+  import { Button, Modal, Spinner, toast } from 'mono-svelte'
   import {
-    ArrowTopRightOnSquare,
     Bookmark,
     BookmarkSlash,
     BugAnt,
     ChatBubbleOvalLeft,
     ChatBubbleOvalLeftEllipsis,
-    Eye,
-    EyeSlash,
+    DocumentDuplicate,
     Flag,
     Icon,
+    Link,
     Share,
     ShieldCheck,
     XMark,
   } from 'svelte-hero-icons'
-  import { postLink, hidePost } from '../helpers'
+  import { postLink } from '../helpers'
   import { PostVote } from '..'
   import { instanceToURL } from '$lib/util.svelte'
-  import { markAsRead, deleteItem } from '$lib/lemmy/contentview'
   import { setSessionStorage } from '$lib/session'
   import { goto } from '$app/navigation'
   import { page } from '$app/stores'
-  import { report } from '../../moderation/moderation'
-  import { client } from '$lib/client/lemmy.svelte'
-  import { PiefedClient } from '$lib/client/piefed/piefed'
 
   let saving = $state(false)
   let editing = $state(false)
+  let reported = $state(false)
 
   function share(global: boolean = true) {
     const link = global
@@ -74,7 +70,7 @@
   }: Props = $props()
   let buttonHeight = $derived(view == 'compact' ? 'h-7.5' : 'h-8')
   let buttonSquare = $derived(view == 'compact' ? 'w-7.5 h-7.5' : 'w-8 h-8')
-  
+
   // Check if we're on the post page (to hide comment button)
   let isOnPostPage = $derived($page.url.pathname.includes(`/post/${post.post.id}`))
 </script>
@@ -188,6 +184,16 @@
       {/await}
     {/if}
 
+    <Button
+      onclick={() => share()}
+      size="custom"
+      class="{buttonSquare} {settings.debugInfo || (profile.current?.user && (amMod(profile.current.user, post.community) || isAdmin(profile.current.user))) ? 'rounded-none' : 'rounded-l-md'} {profile.current?.jwt ? 'border-r-0' : 'rounded-r-md'}"
+      color="ghost"
+      rounding="none"
+      title={$t('post.actions.more.share')}
+      icon={Link}
+    ></Button>
+
     {#if profile.current?.jwt}
       <Button
         onclick={async () => {
@@ -197,7 +203,7 @@
           saving = false
         }}
         size="custom"
-        class="{buttonSquare} {settings.debugInfo ? 'rounded-none' : 'rounded-l-md'} rounded-r-none border-r-0"
+        class="{buttonSquare} rounded-none border-r-0"
         color="ghost"
         rounding="none"
         loading={saving}
@@ -206,17 +212,9 @@
         icon={post.saved ? BookmarkSlash : Bookmark}
       ></Button>
 
-      <Button
-        onclick={() => share()}
-        size="custom"
-        class="{buttonSquare} rounded-none border-r-0"
-        color="ghost"
-        rounding="none"
-        title={$t('post.actions.more.share')}
-        icon={Share}
-      ></Button>
+      <!-- does anyone actually use this lmao? -->
 
-      <Button
+      <!-- <Button
         onclick={async () => {
           if (!profile.current?.jwt) return
           post.read = await markAsRead(post.post, !post.read)
@@ -227,7 +225,7 @@
         rounding="none"
         title={post.read ? $t('post.actions.more.markUnread') : $t('post.actions.more.markRead')}
         icon={post.read ? EyeSlash : Eye}
-      ></Button>
+      ></Button> -->
 
       <Button
         onclick={() => {
@@ -249,11 +247,64 @@
           goto('/create/post?crosspost=true')
         }}
         size="custom"
-        class="{buttonSquare} rounded-l-none rounded-r-md"
+        class="{buttonSquare} {profile.current.user?.local_user_view.person.id == post.creator.id ? 'rounded-l-none rounded-r-md' : 'rounded-none border-r-0'}"
         color="ghost"
         rounding="none"
         title={$t('post.actions.more.crosspost')}
-        icon={ArrowTopRightOnSquare}
+        icon={DocumentDuplicate}
+      ></Button>
+    {/if}
+
+    <!-- Hide button - for non-creators when logged in -->
+    {#if profile.current?.jwt && profile.current.user?.local_user_view.person.id != post.creator.id}
+      <Button
+        onclick={async () => {
+          if (!profile.current?.jwt) return
+          const { hidePost } = await import('../helpers')
+          const hidden = await hidePost(
+            post.post.id,
+            !post.hidden,
+            profile.current?.jwt,
+          )
+          post.hidden = hidden
+          if (hidden) onhide?.(hidden)
+        }}
+        size="custom"
+        class="{buttonSquare} rounded-none border-r-0"
+        color="ghost"
+        rounding="none"
+        title={post.hidden ? $t('post.actions.more.unhide') : $t('post.actions.more.hide')}
+        icon={XMark}
+      ></Button>
+
+      <!-- Report button - for non-creators when logged in -->
+      <Button
+        onclick={async () => {
+          const { report, modals } = await import('../../moderation/moderation')
+          
+          // Listen for when the modal closes
+          let modalWasOpen = false
+          const unsubscribe = modals.subscribe((m) => {
+            if (m.reporting.open && m.reporting.item === post) {
+              modalWasOpen = true
+            } else if (!m.reporting.open && modalWasOpen) {
+              // Modal closed and it was open for this post
+              // We'll assume success since ReportModal shows success toast on success
+              // and this is the only clean way to detect successful submission
+              reported = true
+              unsubscribe()
+            }
+          })
+          
+          report(post)
+        }}
+        size="custom"
+        class="{buttonSquare} rounded-l-none rounded-r-md"
+        color="ghost"
+        rounding="none"
+        style={reported ? 'background-color: rgb(239 68 68) !important; color: white !important;' : ''}
+        title={reported ? $t('moderation.reported') : $t('moderation.report')}
+        icon={Flag}
       ></Button>
     {/if}
   </div>

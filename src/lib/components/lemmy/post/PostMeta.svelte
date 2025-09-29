@@ -210,7 +210,7 @@
           {@attach attachment}
           class={[
             'row-span-2 shrink-0 mr-1 self-center group/btn',
-            'bg-slate-200 dark:bg-zinc-800 rounded-lg cursor-pointer',
+            'cursor-pointer',
           ]}
         >
           {#if community.nsfw && settings.nsfwBlur}
@@ -219,7 +219,7 @@
               'compact'
                 ? 20
                 : 24}"
-              class="bg-red-400 rounded-xl"
+              class="bg-red-400 rounded-full"
             ></div>
           {:else}
             <Avatar

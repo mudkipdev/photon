@@ -66,25 +66,31 @@
         </Expandable>
       {/if}
 
-      <Expandable class="px-1.5" bind:open={settings.expand.communities}>
-        {#snippet title()}
-          <span class="px-2 py-1 w-full">
-            <EndPlaceholder border={false}>
-              {$t('profile.subscribed')}
-            </EndPlaceholder>
-          </span>
-        {/snippet}
+      {#if profile.current.user.follows.length > 0}
+        <Expandable class="px-1.5" bind:open={settings.expand.communities}>
+          {#snippet title()}
+            <span class="px-2 py-1 w-full">
+              <EndPlaceholder border={false}>
+                {$t('profile.subscribed')}
+              </EndPlaceholder>
+            </span>
+          {/snippet}
 
-        <ItemList
-          items={profile.current.user.follows.map((i) => ({
-            id: i.community.id,
-            name: i.community.title,
-            url: communityLink(i.community),
-            avatar: i.community.icon,
-            instance: new URL(i.community.actor_id).hostname,
-          }))}
-        />
-      </Expandable>
+          <ItemList
+            items={profile.current.user.follows.map((i) => ({
+              id: i.community.id,
+              name: i.community.title,
+              url: communityLink(i.community),
+              avatar: i.community.icon,
+              instance: new URL(i.community.actor_id).hostname,
+            }))}
+          />
+        </Expandable>
+      {:else}
+        <div class="px-3.5 py-2 text-slate-600 dark:text-zinc-400 text-sm">
+          {$t('profile.noSubscriptions')}
+        </div>
+      {/if}
     </div>
   {/if}
 
