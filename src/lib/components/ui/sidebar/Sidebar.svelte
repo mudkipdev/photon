@@ -176,7 +176,7 @@
     class="flex gap-6 flex-col xl:flex-row text-sm text-slate-600 dark:text-zinc-300 flex-wrap"
   >
     <div class="flex items-center gap-2">
-      <Logo width={16} />
+      <Logo width={20} />
       <span class="font-medium">
         {__VERSION__}
       </span>

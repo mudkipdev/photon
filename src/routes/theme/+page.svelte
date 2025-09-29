@@ -244,14 +244,6 @@
     class="flex items-center gap-2 sm:gap-8 flex-col sm:flex-row mt-auto mx-auto text-sm text-slate-600 dark:text-zinc-400"
   >
     <span>Slate is for light theme, Zinc is for dark</span>
-    <span>
-      You can share themes at <a
-        href="/c/rephoton@lemdro.id"
-        class="text-sky-600 dark:text-sky-500 hover:underline"
-      >
-        rephoton@lemdro.id
-      </a>
-    </span>
   </div>
 </div>
 

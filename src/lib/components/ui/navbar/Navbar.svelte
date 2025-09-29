@@ -42,34 +42,55 @@
   ]}
   {style}
 >
-  <NavButton
-    oncontextmenu={(e: Event) => {
-      e.preventDefault()
-      promptOpen = true
-      return true
-    }}
-    href="/"
-    label={$t('nav.home')}
-    class="logo border-0 lg:rounded-full! lg:w-10! lg:h-10 lg:px-0! text-primary-900! dark:text-primary-100!"
-    adaptive={false}
-  >
-    {#snippet customIcon()}
-      {#if LINKED_INSTANCE_URL}
-        {#if site.data}
-          <Avatar
-            alt={site.data.site_view.site.name}
-            url={site.data.site_view.site.icon}
-            width={32}
-            circle={false}
-          />
+  <div class="flex items-center gap-1">
+    <NavButton
+      oncontextmenu={(e: Event) => {
+        e.preventDefault()
+        promptOpen = true
+        return true
+      }}
+      href="/"
+      label={$t('nav.home')}
+      class="logo border-0 lg:rounded-full! lg:w-10! lg:h-10 lg:px-0! text-primary-900! dark:text-primary-100!"
+      adaptive={false}
+    >
+      {#snippet customIcon()}
+        {#if LINKED_INSTANCE_URL}
+          {#if site.data}
+            <Avatar
+              alt={site.data.site_view.site.name}
+              url={site.data.site_view.site.icon}
+              width={32}
+              circle={false}
+            />
+          {:else}
+            <Spinner width={32} />
+          {/if}
         {:else}
-          <Spinner width={32} />
+          <Logo width={32} />
         {/if}
-      {:else}
-        <Logo width={32} />
-      {/if}
-    {/snippet}
-  </NavButton>
+      {/snippet}
+    </NavButton>
+    {#if !LINKED_INSTANCE_URL}
+      <span class="font-medium text-primary-900 dark:text-primary-100">
+        RePhoton
+      </span>
+    {/if}
+  </div>
+  <NavButton
+    href="/explore/communities"
+    label={$t('routes.explore.title')}
+    icon={GlobeAlt}
+    isSelectedFilter={(path) => path.startsWith('/explore')}
+  />
+  <NavButton href="/search" label={$t('nav.search')} icon={MagnifyingGlass} />
+  <NavButton
+    label={$t('nav.create.label')}
+    href="/create"
+    isSelectedFilter={(path) => path.startsWith('/create')}
+    icon={PencilSquare}
+    alwaysShowIcon
+  />
   <div class="flex-1"></div>
   {#if profile.current?.user && isAdmin(profile.current.user)}
     <NavButton
@@ -88,20 +109,6 @@
       icon={ShieldCheck}
     />
   {/if}
-  <NavButton
-    href="/explore/communities"
-    label={$t('routes.explore.title')}
-    icon={GlobeAlt}
-    isSelectedFilter={(path) => path.startsWith('/explore')}
-  />
-  <NavButton href="/search" label={$t('nav.search')} icon={MagnifyingGlass} />
-  <NavButton
-    label={$t('nav.create.label')}
-    href="/create"
-    isSelectedFilter={(path) => path.startsWith('/create')}
-    icon={PencilSquare}
-    alwaysShowIcon
-  />
   <Menu placement="bottom">
     {#snippet target(attachment)}
       <button

@@ -33,12 +33,11 @@
   <title>
     {SSR_ENABLED && site.data
       ? site.data.site_view.site.name
-      : $t('routes.frontpage.title')}
+      : "RePhoton"}
   </title>
 </svelte:head>
 
 <Header pageHeader>
-  {$t('routes.frontpage.title')}
   {#snippet extended()}
     <form class="" method="get" action={page.url.pathname}>
       <div class="flex flex-row gap-2">

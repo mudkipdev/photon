@@ -19,10 +19,10 @@ export const LINKED_INSTANCE_URL =
 
 const getDefaultInstance = (): string => {
   if (browser) {
-    return env.PUBLIC_INSTANCE_URL || 'lemdro.id'
+    return env.PUBLIC_INSTANCE_URL || 'lemmy.world'
   } else {
     return (
-      env.PUBLIC_INTERNAL_INSTANCE || env.PUBLIC_INSTANCE_URL || 'lemdro.id'
+      env.PUBLIC_INTERNAL_INSTANCE || env.PUBLIC_INSTANCE_URL || 'lemmy.world'
     )
   }
 }
