@@ -80,14 +80,14 @@
       `border focus-within:border-primary-900 dark:focus-within:border-primary-100 focus-within:ring-2
   ring-slate-300 dark:ring-zinc-700
   transition-colors
-  rounded-xl flex flex-row items-center text-sm`,
+  rounded-md flex flex-row items-center text-sm`,
       clazz,
     ]}
   >
     {#if prefix}
       <div
         class={[
-          'rounded-xl rounded-r-none text-slate-600 dark:text-zinc-400',
+          'rounded-md rounded-r-none text-slate-600 dark:text-zinc-400',
           inlineAffixes && 'bg-white dark:bg-zinc-900 pr-0 w-8',
           sizeClass[size],
         ]}
@@ -106,7 +106,7 @@
       class={[
         sizeClass[size],
         `bg-white dark:bg-zinc-900
-		 focus:outline-hidden rounded-xl text-sm w-full disabled:bg-slate-100
+		 focus:outline-hidden rounded-md text-sm w-full disabled:bg-slate-100
 		disabled:cursor-not-allowed dark:disabled:bg-zinc-800 invalid:border-red-500!
 		peer invalid:text-red-500 z-10`,
         prefix && 'rounded-l-none',
@@ -119,7 +119,7 @@
     {#if suffix}
       <div
         class={[
-          'rounded-xl rounded-l-none text-slate-600 dark:text-zinc-400',
+          'rounded-md rounded-l-none text-slate-600 dark:text-zinc-400',
           inlineAffixes && 'bg-white dark:bg-zinc-900 pl-0',
         ]}
       >

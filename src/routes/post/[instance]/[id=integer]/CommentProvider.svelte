@@ -105,7 +105,7 @@
           <Button
             size="custom"
             class="h-8.5 w-8.5"
-            rounding="xl"
+            rounding="md"
             onclick={onupdate}
             icon={ArrowPath}
           ></Button>

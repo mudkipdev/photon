@@ -42,14 +42,14 @@
   {target}
   {...rest}
   bind:open
-  popoverClass="rounded-xl w-full backdrop-blur-md max-w-72"
+  popoverClass="rounded-md w-max max-w-64"
 >
   {#snippet popover()}
     <div
-      class="w-full max-w-sm max-h-128 overflow-auto list-none shadow-lg rounded-xl"
+      class="w-full max-w-sm max-h-128 overflow-auto list-none shadow-lg rounded-md"
     >
       <div
-        class="flex flex-col p-1 list-none bg-white/80 dark:bg-zinc-900/90 rounded-xl
+        class="flex flex-col p-1 list-none bg-white dark:bg-zinc-900 rounded-md
         border border-slate-200 dark:border-zinc-800 gap-px"
         role="menu"
       >

@@ -23,7 +23,6 @@
   import { Button, Option, Select, TextLoader } from 'mono-svelte'
   import {
     AdjustmentsHorizontal,
-    ChevronDoubleDown,
     GlobeAmericas,
     Icon,
     MagnifyingGlass,
@@ -36,7 +35,6 @@
   let searchElement: HTMLInputElement | undefined = $state()
   let form = $state<HTMLFormElement>()
 
-  let moreOptions = $state(false)
 </script>
 
 <svelte:window
@@ -83,35 +81,19 @@
           bind:selected={data.filters.value.sort}
           onchange={() => form?.requestSubmit()}
         />
-        <Button
-          size="custom"
-          rounding="xl"
-          class="self-end justify-self-center h-8.5 w-8.5"
-          onclick={() => (moreOptions = !moreOptions)}
-          aria-label={$t('post.actions.more.label')}
-        >
-          <Icon src={ChevronDoubleDown} size="20" mini />
-        </Button>
+        <ObjectAutocomplete
+          label={$t('nav.create.community')}
+          jwt={profile.current?.jwt}
+          listing_type="All"
+          showWhenEmpty={true}
+          onselect={(c) =>
+            searchParam(page.url, 'community', c?.id || undefined, 'page')}
+        />
       </div>
     </form>
   {/snippet}
 </Header>
 
-{#if moreOptions}
-  <div
-    transition:slide={{ axis: 'y', easing: expoOut, duration: 500 }}
-    class="flex flex-row gap-2 flex-wrap"
-  >
-    <ObjectAutocomplete
-      label={$t('nav.create.community')}
-      jwt={profile.current?.jwt}
-      listing_type="All"
-      showWhenEmpty={true}
-      onselect={(c) =>
-        searchParam(page.url, 'community', c?.id || undefined, 'page')}
-    />
-  </div>
-{/if}
 {#if !data.results}
   {#if navigating.to?.route.id == '/search'}
     <div class="flex flex-col gap-3 mt-6">

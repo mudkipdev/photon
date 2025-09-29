@@ -59,12 +59,12 @@
     border-radius: var(--radius-md) var(--radius-md);
 
     &:first-child {
-      border-top-left-radius: var(--radius-2xl);
-      border-top-right-radius: var(--radius-2xl);
+      border-top-left-radius: var(--radius-md);
+      border-top-right-radius: var(--radius-md);
     }
     &:last-child {
-      border-bottom-left-radius: var(--radius-2xl);
-      border-bottom-right-radius: var(--radius-2xl);
+      border-bottom-left-radius: var(--radius-md);
+      border-bottom-right-radius: var(--radius-md);
     }
 
     &:hover {

@@ -32,8 +32,8 @@
           width={24}
         />
       </div>
-      <div class="flex flex-col max-w-full break-words">
-        <span>{item.name}</span>
+      <div class="flex flex-col min-w-0 flex-1">
+        <span class="truncate">{item.name}</span>
         {#if item.instance}
           <span class="text-xs text-slate-600 dark:text-zinc-400">
             {item.instance}

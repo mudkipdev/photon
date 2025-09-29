@@ -38,7 +38,7 @@
   let size = $derived(thumbnailSize(view))
 </script>
 
-<!-- 
+<!--
   @component
   Thumbnails for compact and list view posts.
 -->
@@ -63,7 +63,7 @@
   >
     <div
       class={[
-        'relative overflow-hidden rounded-2xl max-h-full h-full',
+        'relative overflow-hidden rounded-md max-h-full h-full',
         'border border-slate-200 dark:border-zinc-800 hover-scale-effect bg-slate-200 dark:bg-zinc-800',
       ]}
     >
@@ -97,7 +97,7 @@
             src={blur ? '' : bestImageURL(post, thumbnail, -1, null)}
             loading="lazy"
             class={[
-              'object-cover relative overflow-hidden rounded-xl h-full',
+              'object-cover relative overflow-hidden rounded-md h-full',
               size,
             ]}
             alt={post.alt_text ?? ' '}
@@ -107,7 +107,7 @@
         {#if type != 'image'}
           <div
             class={[
-              'absolute w-8 h-8 bottom-1 left-1 rounded-xl bg-slate-25 dark:bg-zinc-900 grid place-items-center',
+              'absolute w-8 h-8 bottom-1 left-1 rounded-md bg-slate-25 dark:bg-zinc-900 grid place-items-center',
             ]}
           >
             <Icon src={type == 'iframe' ? VideoCamera : Link} micro size="16" />
@@ -116,7 +116,7 @@
       {:else}
         <div
           class={[
-            'bg-slate-100 dark:bg-zinc-900 w-full h-full rounded-xl grid place-items-center',
+            'bg-slate-100 dark:bg-zinc-900 w-full h-full rounded-md grid place-items-center',
             'text-slate-600 dark:text-zinc-400',
           ]}
         >

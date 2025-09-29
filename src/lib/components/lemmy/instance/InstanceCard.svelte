@@ -8,7 +8,9 @@
   import { Badge } from 'mono-svelte'
   import {
     BuildingOffice,
+    Flag,
     Icon,
+    Megaphone,
     Newspaper,
     ServerStack,
   } from 'svelte-hero-icons'
@@ -57,7 +59,7 @@
     <Avatar width={32} url={site.site.icon} alt="" circle={false} />
     <h2 class="font-medium text-lg -my-2">{site.site.name}</h2>
   </div>
-  <div class="flex flex-col gap-1">
+  <div class="flex flex-col gap-2">
     {#if taglines && taglines.length > 0}
       <Markdown
         class="pt-0! mx-3"
@@ -65,47 +67,10 @@
       />
     {/if}
 
-    <EndPlaceholder size="xs" margin="sm">
-      {$t('nav.menu.instance')}
-    </EndPlaceholder>
-    <SidebarButton
-      href="/modlog"
-      label={$t('routes.modlog.title')}
-      icon={Newspaper}
-    />
-    <SidebarButton
-      href="/legal"
-      label={$t('routes.legal.title')}
-      icon={BuildingOffice}
-    />
-    <SidebarButton
-      href="/instances"
-      label={$t('routes.instances')}
-      icon={ServerStack}
-    />
-
-    <EndPlaceholder size="xs" margin="sm">
-      {$t('cards.site.stats')}
-    </EndPlaceholder>
     <div class="flex flex-row gap-4 flex-wrap px-3">
       <LabelStat
         label={$t('content.users')}
         content={site.counts.users.toString()}
-        formatted
-      />
-      <LabelStat
-        label={$t('content.posts')}
-        content={site.counts.posts.toString()}
-        formatted
-      />
-      <LabelStat
-        label={$t('content.comments')}
-        content={site.counts.comments.toString()}
-        formatted
-      />
-      <LabelStat
-        label={$t('cards.community.activeDay')}
-        content={site.counts.users_active_day.toString()}
         formatted
       />
       <LabelStat
@@ -116,46 +81,56 @@
     </div>
 
     <EndPlaceholder size="xs" margin="sm">
-      {$t('common.info')}
+      {$t('nav.menu.instance')}
+    </EndPlaceholder>
+    <SidebarButton
+      href="/modlog"
+      label={$t('routes.modlog.title')}
+      icon={Megaphone}
+    />
+    <SidebarButton
+      href="/legal"
+      label={$t('routes.legal.title')}
+      icon={Newspaper}
+    />
+    <SidebarButton
+      href="/instances"
+      label={$t('routes.instances')}
+      icon={ServerStack}
+    />
+
+    {#if admins}
+      <EndPlaceholder size="xs" margin="sm">
+        {$t('cards.site.admins')}
+      </EndPlaceholder>
+      <div class="px-1.5">
+        <ItemList
+          items={admins.map((i) => ({
+            id: i.person.id,
+            name: i.person.display_name || i.person.name,
+            url: userLink(i.person),
+            avatar: i.person.avatar,
+            instance: new URL(i.person.actor_id).hostname,
+          }))}
+        />
+      </div>
+    {/if}
+
+    <EndPlaceholder size="xs" margin="sm">
+      {$t('cards.site.about')}
     </EndPlaceholder>
     <div class="space-y-3 px-1.5 text-sm">
-      <Expandable bind:open={settings.expand.about}>
-        {#snippet title()}
-          <span class="flex items-center gap-1 py-1 px-2 w-full">
-            {$t('cards.site.about')}
-          </span>
-        {/snippet}
-        <Markdown source={site.site.description} />
-        <div class="my-4"></div>
-        <Markdown source={site.site.sidebar} />
+      <Markdown source={site.site.description} />
+      <div class="my-4"></div>
+      <Markdown source={site.site.sidebar} />
 
-        {#if version}
-          <div class="w-max">
-            <Badge label="Lemmy version">
-              <Icon src={ServerStack} micro size="14" />
-              {version}
-            </Badge>
-          </div>
-        {/if}
-      </Expandable>
-
-      {#if admins}
-        <Expandable bind:open={settings.expand.team}>
-          {#snippet title()}
-            <span class="flex items-center gap-1 py-1 px-2 w-full">
-              {$t('cards.site.admins')}
-            </span>
-          {/snippet}
-          <ItemList
-            items={admins.map((i) => ({
-              id: i.person.id,
-              name: i.person.display_name || i.person.name,
-              url: userLink(i.person),
-              avatar: i.person.avatar,
-              instance: new URL(i.person.actor_id).hostname,
-            }))}
-          />
-        </Expandable>
+      {#if version}
+        <div class="w-max">
+          <Badge label="Lemmy version">
+            <Icon src={ServerStack} micro size="14" />
+            {version}
+          </Badge>
+        </div>
       {/if}
     </div>
   </div>

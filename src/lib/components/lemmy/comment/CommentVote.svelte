@@ -75,7 +75,7 @@
     onclick={() => castVote(vote == targetNum ? 0 : targetNum)}
     class={[
       'flex items-center gap-0.5 transition-colors relative cursor-pointer h-full p-1.5',
-      'first:rounded-l-3xl last:rounded-r-3xl',
+      'first:rounded-l-md last:rounded-r-md',
       'last:flex-row-reverse',
       vote == targetNum
         ? shouldShowVoteColor(
@@ -112,7 +112,7 @@
 
 <div
   class={[
-    'h-full relative flex items-center overflow-hidden rounded-full hover:bg-transparent font-medium hover:dark:bg-transparent',
+    'h-full relative flex items-center overflow-hidden rounded-md hover:bg-transparent font-medium hover:dark:bg-transparent',
     buttonColor.ghost,
     voteRatio < 85 && settings.voteRatioBar && 'vote-ratio',
   ]}

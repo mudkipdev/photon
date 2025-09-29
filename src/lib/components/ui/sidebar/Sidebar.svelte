@@ -43,79 +43,7 @@
   class={['flex flex-col overflow-auto gap-1', clazz]}
   {style}
 >
-  <ProfileSelection profiles={profile.meta.profiles} />
-  <EndPlaceholder margin="sm" size="xs">{$t('profile.profile')}</EndPlaceholder>
-  {#if profile.current?.jwt}
-    <SidebarButton
-      icon={UserCircle}
-      href="/profile"
-      label={$t('profile.profile')}
-    />
-    <SidebarButton icon={Inbox} href="/inbox" label={$t('profile.inbox')}>
-      {#if $notifications.inbox}
-        <Badge
-          class="min-w-5 h-5 p-0! px-0.5 grid place-items-center ml-auto"
-          color="red-subtle"
-        >
-          {$notifications.inbox > 99 ? '∞' : $notifications.inbox}
-        </Badge>
-      {/if}
-    </SidebarButton>
-    <SidebarButton icon={Bookmark} href="/saved" label={$t('profile.saved')} />
-  {:else}
-    <SidebarButton
-      href="/login"
-      label={$t('account.login')}
-      icon={ArrowLeftOnRectangle}
-    />
-    <SidebarButton
-      href="/signup"
-      label={$t('account.signup')}
-      icon={Identification}
-    />
-    <SidebarButton
-      href="/accounts"
-      label={$t('account.accounts')}
-      icon={UserGroup}
-    />
-  {/if}
-  <EndPlaceholder margin="sm" size="xs">{$t('nav.menu.app')}</EndPlaceholder>
-  <SidebarButton
-    href="/settings"
-    label={$t('nav.menu.settings')}
-    icon={Cog6Tooth}
-  />
-  <Select bind:value={theme.colorScheme} size="sm">
-    {#snippet target(attachment)}
-      <SidebarButton
-        {@attach attachment}
-        label={$t('nav.menu.colorscheme.label')}
-        icon={theme.colorScheme == 'system'
-          ? ComputerDesktop
-          : theme.colorScheme == 'light'
-            ? Sun
-            : Moon}
-        class="w-full relative"
-      >
-        <Option value="system" class="hidden" icon={ComputerDesktop}>
-          {$t('nav.menu.colorscheme.system')}
-        </Option>
-        <Option value="light" class="hidden" icon={Sun}>
-          {$t('nav.menu.colorscheme.light')}
-        </Option>
-        <Option value="dark" class="hidden" icon={Moon}>
-          {$t('nav.menu.colorscheme.dark')}
-        </Option>
-        <Icon micro size="16" src={ChevronUpDown} class="ml-auto" />
-      </SidebarButton>
-    {/snippet}
-  </Select>
-  <SidebarButton href="/theme" label={$t('nav.menu.theme')} icon={Swatch} />
   {#if profile.current?.user}
-    <EndPlaceholder margin="sm" size="xs">
-      {$t('content.communities')}
-    </EndPlaceholder>
-
     <div class="space-y-3">
       {#if profile.current?.user.moderates.length > 0}
         <Expandable class="px-1.5" bind:open={settings.expand.moderates}>
@@ -123,11 +51,6 @@
             <span class="px-2 py-1 w-full">
               <EndPlaceholder border={false}>
                 {$t('routes.profile.moderates')}
-                {#snippet action()}
-                  <span class="dark:text-white text-black">
-                    {profile.current.user?.moderates.length}
-                  </span>
-                {/snippet}
               </EndPlaceholder>
             </span>
           {/snippet}
@@ -148,11 +71,6 @@
           <span class="px-2 py-1 w-full">
             <EndPlaceholder border={false}>
               {$t('profile.subscribed')}
-              {#snippet action()}
-                <span class="dark:text-white text-black">
-                  {profile.current.user?.follows.length}
-                </span>
-              {/snippet}
             </EndPlaceholder>
           </span>
         {/snippet}
@@ -178,13 +96,11 @@
     <div class="flex items-center gap-2">
       <Logo width={20} />
       <span class="font-medium">
-        {__VERSION__}
+        v{__VERSION__}
       </span>
     </div>
-    {#if env.PUBLIC_XYLIGHT_MODE?.toLowerCase() == 'true'}
-      <Link highlight href="https://github.com/mudkipdev/rephoton">
-        {$t('nav.menu.source')}
-      </Link>
-    {/if}
+    <Link highlight href="https://github.com/mudkipdev/rephoton">
+      {$t('nav.menu.source')}
+    </Link>
   </footer>
 </nav>

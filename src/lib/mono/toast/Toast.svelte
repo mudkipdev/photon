@@ -24,7 +24,7 @@
 <div
   class={[
     toastColors[toast.type],
-    'relative rounded-xl overflow-hidden flex flex-row items-center gap-2 px-3 py-3 border border-slate-200 dark:border-zinc-800',
+    'relative rounded-md overflow-hidden flex flex-row items-center gap-2 px-3 py-3 border border-slate-200 dark:border-zinc-800',
     'bg-white dark:bg-zinc-925 shadow-lg',
     toast.long ? 'w-full max-w-lg' : 'w-80',
   ]}
@@ -43,7 +43,7 @@
     <Icon
       size="28"
       mini
-      class={['relative self-center shrink-0 p-1 rounded-lg']}
+      class={['relative self-center shrink-0 p-1 rounded-md']}
       src={toast.type == 'info'
         ? InformationCircle
         : toast.type == 'success'
@@ -71,7 +71,7 @@
           toast.action?.()
           toasts.update((toasts) => toasts.filter((t) => t.id != toast.id))
         }}
-        class="rounded-lg w-max transition-colors hover:bg-slate-100 dark:hover:bg-zinc-800 p-1 cursor-pointer"
+        class="rounded-md w-max transition-colors hover:bg-slate-100 dark:hover:bg-zinc-800 p-1 cursor-pointer"
       >
         <Icon src={Check} size="20" micro />
       </button>
@@ -80,7 +80,7 @@
       onclick={() => {
         toasts.update((toasts) => toasts.filter((t) => t.id != toast.id))
       }}
-      class="rounded-lg w-max transition-colors hover:bg-slate-100 dark:hover:bg-zinc-800 p-1 cursor-pointer text-slate-600 dark:text-zinc-400"
+      class="rounded-md w-max transition-colors hover:bg-slate-100 dark:hover:bg-zinc-800 p-1 cursor-pointer text-slate-600 dark:text-zinc-400"
     >
       <Icon src={XMark} size="16" micro />
     </button>

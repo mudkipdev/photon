@@ -10,22 +10,50 @@
   import { save } from '$lib/lemmy/contentview.js'
   import { settings, type View } from '$lib/settings.svelte.js'
   import type { PostView } from '$lib/client/types'
-  import { Button, Menu, Modal, Spinner } from 'mono-svelte'
+  import { Button, Menu, Modal, Spinner, toast } from 'mono-svelte'
   import {
+    ArrowTopRightOnSquare,
     Bookmark,
     BookmarkSlash,
     BugAnt,
     ChatBubbleOvalLeft,
     ChatBubbleOvalLeftEllipsis,
-    EllipsisHorizontal,
+    Eye,
+    EyeSlash,
+    Flag,
     Icon,
+    Share,
     ShieldCheck,
+    XMark,
   } from 'svelte-hero-icons'
-  import { postLink } from '../helpers'
+  import { postLink, hidePost } from '../helpers'
   import { PostVote } from '..'
+  import { instanceToURL } from '$lib/util.svelte'
+  import { markAsRead, deleteItem } from '$lib/lemmy/contentview'
+  import { setSessionStorage } from '$lib/session'
+  import { goto } from '$app/navigation'
+  import { page } from '$app/stores'
+  import { report } from '../../moderation/moderation'
+  import { client } from '$lib/client/lemmy.svelte'
+  import { PiefedClient } from '$lib/client/piefed/piefed'
 
   let saving = $state(false)
   let editing = $state(false)
+
+  function share(global: boolean = true) {
+    const link = global
+      ? post.post.ap_id
+      : `${instanceToURL(profile.current.instance)}/post/${post.post.id}`
+
+    if (navigator.share)
+      navigator.share?.({
+        url: link,
+      })
+    else {
+      navigator.clipboard.writeText(link)
+      toast({ content: $t('toast.copied') })
+    }
+  }
 
   interface Props {
     post: PostView
@@ -46,6 +74,9 @@
   }: Props = $props()
   let buttonHeight = $derived(view == 'compact' ? 'h-7.5' : 'h-8')
   let buttonSquare = $derived(view == 'compact' ? 'w-7.5 h-7.5' : 'w-8 h-8')
+  
+  // Check if we're on the post page (to hide comment button)
+  let isOnPostPage = $derived($page.url.pathname.includes(`/post/${post.post.id}`))
 </script>
 
 {#if editing}
@@ -100,102 +131,130 @@
     bind:downvotes={post.counts.downvotes}
   />
 
-  <Button
-    size="custom"
-    href="{postLink(post.post)}#comments"
-    class="text-inherit! h-full px-3 relative"
-    color="ghost"
-    rounding="pill"
-    target={settings.openLinksInNewTab ? '_blank' : ''}
-    aria-label={$t('post.actions.comments')}
-  >
-    {@const newComment =
-      publishedToDate(post.counts.newest_comment_time).getTime() >
-      new Date().getTime() - 5 * 60 * 1000}
-    <Icon
-      src={newComment ? ChatBubbleOvalLeftEllipsis : ChatBubbleOvalLeft}
-      size="16"
-      mini
-    />
-    <FormattedNumber number={post.counts.comments} />
-  </Button>
-  <div class="flex-1"></div>
-  {#if settings.debugInfo}
-    {#if debug}
-      {#await import('$lib/components/util/debug/DebugObject.svelte') then { default: DebugObject }}
-        <DebugObject object={post} bind:open={debug} />
-      {/await}
-    {/if}
+  {#if !isOnPostPage}
     <Button
-      onclick={() => (debug = true)}
-      title="Debug"
       size="custom"
+      href="{postLink(post.post)}#comments"
+      class="text-inherit! h-full px-3 relative"
       color="ghost"
-      rounding="pill"
-      class={buttonSquare}
-      icon={BugAnt}
-    ></Button>
+      rounding="md"
+      target={settings.openLinksInNewTab ? '_blank' : ''}
+      aria-label={$t('post.actions.comments')}
+    >
+      {@const newComment =
+        publishedToDate(post.counts.newest_comment_time).getTime() >
+        new Date().getTime() - 5 * 60 * 1000}
+      <Icon
+        src={newComment ? ChatBubbleOvalLeftEllipsis : ChatBubbleOvalLeft}
+        size="16"
+        mini
+      />
+      <FormattedNumber number={post.counts.comments} />
+    </Button>
   {/if}
-  {#if profile.current?.user && (amMod(profile.current.user, post.community) || isAdmin(profile.current.user))}
-    {#await import('$lib/components/lemmy/moderation/ModerationMenu.svelte') then { default: ModerationMenu }}
-      <ModerationMenu bind:item={post}>
-        {#snippet target(attachment, acting)}
-          <Button
-            {@attach attachment}
-            size="custom"
-            color="ghost"
-            rounding="pill"
-            loading={acting}
-            class={buttonSquare}
-          >
-            <Icon src={ShieldCheck} size="18" mini />
-          </Button>
-        {/snippet}
-      </ModerationMenu>
-    {/await}
-  {/if}
-
-  {#if profile.current?.jwt}
-    <Button
-      onclick={async () => {
-        if (!profile.current?.jwt) return
-        saving = true
-        post.saved = await save(post, !post.saved)
-        saving = false
-      }}
-      size="custom"
-      class={buttonSquare}
-      color="ghost"
-      rounding="pill"
-      loading={saving}
-      disabled={saving}
-      title={post.saved ? $t('post.actions.unsave') : $t('post.actions.save')}
-      icon={post.saved ? BookmarkSlash : Bookmark}
-    ></Button>
-  {/if}
-
-  <Menu placement="bottom-end">
-    {#snippet target(popover)}
-      <Button
-        {@attach popover}
-        title={$t('post.actions.more.label')}
-        color="ghost"
-        rounding="pill"
-        size="custom"
-        class={buttonSquare}
-        icon={EllipsisHorizontal}
-      ></Button>
-    {/snippet}
-    {#snippet children(open)}
-      {#if open}
-        {#await import ('./PostActionsMenu.svelte')}
-          <div class="p-8 w-full h-full grid place-items-center">
-            <Spinner width={20} />
-          </div>
-        {:then { default: PostActionsMenu }}
-          <PostActionsMenu bind:post {onhide} bind:editing />
+  <div class="flex items-center">
+    {#if settings.debugInfo}
+      {#if debug}
+        {#await import('$lib/components/util/debug/DebugObject.svelte') then { default: DebugObject }}
+          <DebugObject object={post} bind:open={debug} />
         {/await}
       {/if}
-    {/snippet}
-  </Menu>
+      <Button
+        onclick={() => (debug = true)}
+        title="Debug"
+        size="custom"
+        color="ghost"
+        rounding="md"
+        class="{buttonSquare} rounded-r-none border-r-0"
+        icon={BugAnt}
+      ></Button>
+    {/if}
+    {#if profile.current?.user && (amMod(profile.current.user, post.community) || isAdmin(profile.current.user))}
+      {#await import('$lib/components/lemmy/moderation/ModerationMenu.svelte') then { default: ModerationMenu }}
+        <ModerationMenu bind:item={post}>
+          {#snippet target(attachment, acting)}
+            <Button
+              {@attach attachment}
+              size="custom"
+              color="ghost"
+              rounding="md"
+              loading={acting}
+              class="{buttonSquare} {settings.debugInfo ? 'rounded-none' : 'rounded-l-none'} border-r-0"
+            >
+              <Icon src={ShieldCheck} size="18" mini />
+            </Button>
+          {/snippet}
+        </ModerationMenu>
+      {/await}
+    {/if}
+
+    {#if profile.current?.jwt}
+      <Button
+        onclick={async () => {
+          if (!profile.current?.jwt) return
+          saving = true
+          post.saved = await save(post, !post.saved)
+          saving = false
+        }}
+        size="custom"
+        class="{buttonSquare} rounded-l-md rounded-r-none border-r-0"
+        color="ghost"
+        rounding="none"
+        loading={saving}
+        disabled={saving}
+        title={post.saved ? $t('post.actions.unsave') : $t('post.actions.save')}
+        icon={post.saved ? BookmarkSlash : Bookmark}
+      ></Button>
+
+      <Button
+        onclick={() => share()}
+        size="custom"
+        class="{buttonSquare} rounded-none border-r-0"
+        color="ghost"
+        rounding="none"
+        title={$t('post.actions.more.share')}
+        icon={Share}
+      ></Button>
+
+      <Button
+        onclick={async () => {
+          if (!profile.current?.jwt) return
+          post.read = await markAsRead(post.post, !post.read)
+        }}
+        size="custom"
+        class="{buttonSquare} rounded-none border-r-0"
+        color="ghost"
+        rounding="none"
+        title={post.read ? $t('post.actions.more.markUnread') : $t('post.actions.more.markRead')}
+        icon={post.read ? EyeSlash : Eye}
+      ></Button>
+
+      <Button
+        onclick={() => {
+          setSessionStorage('postDraft', {
+            body: `${
+              settings.crosspostOriginalLink
+                ? `cross-posted from: ${post.post.ap_id}`
+                : ``
+            }\n${
+              post.post.body ? '>' + post.post.body.split('\n').join('\n> ') : ''
+            }`,
+            url: post.post.url,
+            title: post.post.name,
+            loading: false,
+            nsfw: post.post.nsfw,
+            community: null,
+            image: null,
+          })
+          goto('/create/post?crosspost=true')
+        }}
+        size="custom"
+        class="{buttonSquare} rounded-l-none rounded-r-md"
+        color="ghost"
+        rounding="none"
+        title={$t('post.actions.more.crosspost')}
+        icon={ArrowTopRightOnSquare}
+      ></Button>
+    {/if}
+  </div>
 </footer>

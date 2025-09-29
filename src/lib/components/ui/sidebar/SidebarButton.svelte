@@ -29,7 +29,7 @@
 <Button
   color="tertiary"
   alignment="left"
-  rounding="xl"
+  rounding="md"
   {...rest}
   {href}
   class={[

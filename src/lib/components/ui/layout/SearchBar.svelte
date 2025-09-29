@@ -20,7 +20,7 @@
     name="q"
     placeholder={$t('routes.search.query')}
     size="lg"
-    class="flex-1 rounded-full! h-full text-base!"
+    class="flex-1 rounded-lg! h-full text-base!"
   />
   <Button
     submit
@@ -28,7 +28,7 @@
     size="custom"
     class="shrink-0 h-full aspect-square shadow-md"
     title="Search"
-    rounding="pill"
+    rounding="lg"
     loading={navigating.to?.route.id == page.url.pathname}
     icon={MagnifyingGlass}
   ></Button>

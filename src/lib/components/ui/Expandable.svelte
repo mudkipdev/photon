@@ -1,6 +1,6 @@
 <script lang="ts">
   import { Disclosure } from 'mono-svelte'
-  import { Minus, Plus, Icon } from 'svelte-hero-icons'
+  import { ChevronRight, ChevronDown, Icon } from 'svelte-hero-icons'
   import type { ClassValue } from 'svelte/elements'
   interface Props {
     open?: boolean
@@ -27,28 +27,23 @@
   {#snippet summary()}
     <div
       class={[
-        'font-medium w-full text-left flex flex-row items-center justify-between hover:text-primary-900',
-        'dark:hover:text-primary-100 transition-colors h-full z-0 group relative cursor-pointer',
+        'font-medium w-full text-left flex flex-row items-center gap-1 h-full z-0 group relative cursor-pointer',
       ]}
     >
-      <div class="flex flex-row gap-1 items-center w-full">
-        {@render title?.(open)}
-      </div>
       {#if icon}
         <div
           class={[
-            'ml-auto ',
-            !open && 'rotate-90',
-            'transition-transform duration-300 ease-out',
+            'transition-all duration-300 ease-out',
+            'rounded-full p-2 -m-2',
+            open ? 'rotate-90' : 'rotate-0',
           ]}
         >
-          <Icon src={open ? Minus : Plus} size="15" micro class={[]} />
+          <Icon src={ChevronRight} size="18" micro class={['transition-transform duration-300 ease-out text-slate-600 dark:text-zinc-400']} />
         </div>
       {/if}
-      <div
-        class="inset-0 -z-10 opacity-0 absolute bg-slate-200/50 dark:bg-zinc-900/50 rounded-full
-      group-hover:opacity-100 group-hover:-inset-1 group-hover:-inset-x-2 transition-all"
-      ></div>
+      <div class="flex flex-row gap-0.5 items-center w-full">
+        {@render title?.(open)}
+      </div>
     </div>
   {/snippet}
   {#if content}{@render content()}{:else}

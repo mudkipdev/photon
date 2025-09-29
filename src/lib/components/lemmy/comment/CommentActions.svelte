@@ -10,7 +10,7 @@
   import { t } from '$lib/i18n/translations'
   import { deleteItem, save } from '$lib/lemmy/contentview.js'
   import { settings } from '$lib/settings.svelte'
-  import { Button, Menu, MenuButton } from 'mono-svelte'
+  import { Button, Menu, MenuButton, toast } from 'mono-svelte'
   import {
     Bookmark,
     BookmarkSlash,
@@ -36,6 +36,19 @@
     disabled = false,
     onedit,
   }: Props = $props()
+
+  let saving = $state(false)
+
+  function share() {
+    if (navigator.share)
+      navigator.share?.({
+        url: comment.comment.ap_id,
+      })
+    else {
+      navigator.clipboard.writeText(comment.comment.ap_id)
+      toast({ content: $t('toast.copied') })
+    }
+  }
 </script>
 
 <div
@@ -52,9 +65,9 @@
   />
   <Button
     color="tertiary"
-    rounding="pill"
-    size="sm"
-    class="text-slate-500 dark:text-zinc-400 gap-1!"
+    rounding="md"
+    size="xs"
+    class="text-slate-500 dark:text-zinc-400 gap-1! h-7"
     onclick={() => (replying = !replying)}
     disabled={comment.post.locked || disabled || !profile.current.jwt}
     icon={ChatBubbleOvalLeft}
@@ -64,48 +77,50 @@
   {#if profile.current?.user && (amMod(profile.current?.user, comment.community) || isAdmin(profile.current.user))}
     <CommentModerationMenu bind:item={comment} />
   {/if}
-  <Menu placement="bottom">
-    {#snippet target(attachment)}
+  {#if profile.current?.jwt}
+    <div class="flex items-center">
       <Button
-        {@attach attachment}
-        title={$t('comment.actions.label')}
-        color="tertiary"
-        rounding="pill"
-        size="square-md"
-        class="text-slate-600 dark:text-zinc-400"
-        icon={EllipsisHorizontal}
-      ></Button>
-    {/snippet}
-    <MenuButton
-      onclick={() => {
-        if (navigator.share)
-          navigator.share?.({
-            url: comment.comment.ap_id,
-          })
-        else navigator.clipboard.writeText(comment.comment.ap_id)
-      }}
-      icon={Share}
-    >
-      {$t('post.actions.more.share')}
-    </MenuButton>
-    {#if profile.current?.jwt}
-      {#if comment.creator.id == profile.current.user?.local_user_view.person.id}
-        <MenuButton onclick={() => onedit?.(comment)} icon={PencilSquare}>
-          {$t('post.actions.more.edit')}
-        </MenuButton>
-      {/if}
-      <MenuButton
-        onclick={async () => {
-          if (profile.current?.jwt)
-            comment.saved = await save(comment, !comment.saved)
-        }}
-        icon={comment.saved ? BookmarkSlash : Bookmark}
+        onclick={() => share()}
+        size="custom"
+        class="h-7 px-2 rounded-l-md rounded-r-none border border-r-0 border-slate-300 dark:border-zinc-600 text-slate-500 dark:text-zinc-500 bg-transparent hover:bg-transparent"
+        color="ghost"
+        rounding="none"
+        title={$t('post.actions.more.share')}
       >
-        {comment.saved ? $t('post.actions.unsave') : $t('post.actions.save')}
-      </MenuButton>
-      {#if profile.current?.user && profile.current.jwt && profile.current.user.local_user_view.person.id == comment.creator.id}
-        <MenuButton
-          color="danger-subtle"
+        <Icon src={Share} size="14" mini />
+      </Button>
+
+      <Button
+        onclick={async () => {
+          if (!profile.current?.jwt) return
+          saving = true
+          comment.saved = await save(comment, !comment.saved)
+          saving = false
+        }}
+        size="custom"
+        class="h-7 px-2 rounded-none border border-r-0 border-slate-300 dark:border-zinc-600 text-slate-500 dark:text-zinc-500 bg-transparent hover:bg-transparent"
+        color="ghost"
+        rounding="none"
+        loading={saving}
+        disabled={saving}
+        title={comment.saved ? $t('post.actions.unsave') : $t('post.actions.save')}
+      >
+        <Icon src={comment.saved ? BookmarkSlash : Bookmark} size="14" mini />
+      </Button>
+
+      {#if comment.creator.id == profile.current.user?.local_user_view.person.id}
+        <Button
+          onclick={() => onedit?.(comment)}
+          size="custom"
+          class="h-7 px-2 rounded-none border border-r-0 border-slate-300 dark:border-zinc-600 text-slate-500 dark:text-zinc-500 bg-transparent hover:bg-transparent"
+          color="ghost"
+          rounding="none"
+          title={$t('post.actions.more.edit')}
+        >
+          <Icon src={PencilSquare} size="14" mini />
+        </Button>
+
+        <Button
           onclick={async () => {
             if (profile.current?.jwt)
               comment.comment.deleted = await deleteItem(
@@ -113,23 +128,27 @@
                 !comment.comment.deleted,
               )
           }}
-          icon={Trash}
+          size="custom"
+          class="h-7 px-2 rounded-l-none rounded-r-md border border-slate-300 dark:border-zinc-600 text-slate-500 dark:text-zinc-500 bg-transparent hover:bg-transparent"
+          color="ghost"
+          rounding="none"
+          title={comment.comment.deleted ? $t('post.actions.more.restore') : $t('post.actions.more.delete')}
         >
-          {comment.comment.deleted
-            ? $t('post.actions.more.restore')
-            : $t('post.actions.more.delete')}
-        </MenuButton>
-      {/if}
-      {#if profile.current.jwt && profile.current.user?.local_user_view.person.id != comment.creator.id}
-        <MenuButton
+          <Icon src={Trash} size="14" mini />
+        </Button>
+      {:else}
+        <Button
           onclick={() => report(comment)}
-          color="danger-subtle"
-          icon={Flag}
+          size="custom"
+          class="h-7 px-2 rounded-l-none rounded-r-md border border-slate-300 dark:border-zinc-600 text-slate-500 dark:text-zinc-500 bg-transparent hover:bg-transparent"
+          color="ghost"
+          rounding="none"
+          title={$t('moderation.report')}
         >
-          {$t('moderation.report')}
-        </MenuButton>
+          <Icon src={Flag} size="14" mini />
+        </Button>
       {/if}
-    {/if}
-  </Menu>
+    </div>
+  {/if}
   <div class="flex-1 w-full"></div>
 </div>

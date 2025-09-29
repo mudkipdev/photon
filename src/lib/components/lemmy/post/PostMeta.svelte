@@ -266,14 +266,6 @@
   >
     {#if user}
       <address class="contents not-italic">
-        {#if view == 'compact' && showCommunity}
-          <Icon
-            src={PaperAirplane}
-            size="12"
-            micro
-            class="rotate-180 text-slate-400 dark:text-zinc-600 max-sm:hidden"
-          />
-        {/if}
         <UserLink avatarSize={20} {user} avatar={!showCommunity} class="shrink">
           {#snippet extraBadges()}
             {#if badges.moderator}

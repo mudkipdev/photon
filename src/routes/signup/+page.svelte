@@ -17,23 +17,26 @@
   import { preventDefault } from 'svelte/legacy'
 
   import { goto } from '$app/navigation'
+  import { env } from '$env/dynamic/public'
   import VirtualList from '$lib/components/render/VirtualList.svelte'
   import Avatar from '$lib/components/ui/Avatar.svelte'
   import { Header } from '$lib/components/ui/layout'
   import { t } from '$lib/i18n/translations'
-  import { DEFAULT_INSTANCE_URL } from '$lib/instance.svelte.js'
   import { validateInstance } from '$lib/client/lemmy.svelte'
+  import { DEFAULT_CLIENT_TYPE } from '$lib/client/base'
   import { Button, TextInput, toast } from 'mono-svelte'
   import { onMount } from 'svelte'
   import { ArrowLeft, Icon } from 'svelte-hero-icons'
 
   let selectedInstance: string = $state('')
   let validating: boolean = $state(false)
-  let placeholder = $state(DEFAULT_INSTANCE_URL)
+  let placeholder = env.PUBLIC_INSTANCE_URL || 'lemmy.world'
 
-  let instances: Instance[] | undefined = $state(undefined)
+  let instances: Instance[] = $state([])
+  let loadingInstances = $state(true)
 
   onMount(async () => {
+    // Load instances in background
     try {
       const res: Instance[] = (
         await fetch(`https://data.lemmyverse.net/data/instance.full.json`).then(
@@ -45,6 +48,7 @@
         .slice(0, 100)
 
       instances = res
+      loadingInstances = false
 
       let placeholderIndex = 0
       setInterval(() => {
@@ -54,6 +58,7 @@
         placeholderIndex++
       }, 2000)
     } catch {
+      loadingInstances = false
       toast({
         content: $t('toast.failFetchInstances'),
         type: 'error',
@@ -76,49 +81,71 @@
   <p>
     {$t('form.signup.info')}
   </p>
-  {#if instances}
-    <VirtualList
-      items={instances}
-      useWindow={false}
-      height={400}
-      estimatedHeight={50}
-      class="overflow-auto border rounded-2xl border-slate-200 dark:border-zinc-900 bg-white dark:bg-zinc-950
-      divide-y divide-slate-200 dark:divide-zinc-900"
-    >
-      {#snippet item(i)}
-        <button
-          onclick={() => (selectedInstance = instances![i].baseurl ?? '')}
-          class="flex flex-row gap-2 text-left py-2 first:pt-0 last:pb-0 items-center
-            h-16 max-h-16 min-h-16 overflow-hidden w-full cursor-pointer hover:bg-slate-50 hover:dark:bg-zinc-925 duration-100
-            p-4"
+  <div
+    class="overflow-auto border rounded-2xl border-slate-200 dark:border-zinc-900 bg-white dark:bg-zinc-950
+    divide-y divide-slate-200 dark:divide-zinc-900"
+    style="height: 400px;"
+  >
+    {#if loadingInstances}
+      <!-- Loading skeleton with reserved space -->
+      {#each Array(8) as _, i}
+        <div
+          class="flex flex-row gap-2 items-center h-16 max-h-16 min-h-16 p-4 animate-pulse"
         >
-          <Avatar
-            width={32}
-            url={instances![i].icon}
-            alt={instances![i].name}
-            class="shrink-0"
-          />
-          <div class="flex flex-col max-h-full w-full">
-            <span class="font-medium text-base whitespace-nowrap text-ellipsis">
-              {instances![i].name}
-            </span>
-            <span
-              class="whitespace-nowrap text-ellipsis overflow-hidden w-full"
-            >
-              {instances![i].desc}
-            </span>
+          <div class="w-8 h-8 bg-slate-200 dark:bg-zinc-700 rounded-full shrink-0"></div>
+          <div class="flex flex-col gap-1 w-full">
+            <div class="h-4 bg-slate-200 dark:bg-zinc-700 rounded w-3/4"></div>
+            <div class="h-3 bg-slate-200 dark:bg-zinc-700 rounded w-full"></div>
           </div>
-        </button>
-      {/snippet}
-    </VirtualList>
-  {/if}
+        </div>
+      {/each}
+    {:else if instances.length > 0}
+      <VirtualList
+        items={instances}
+        useWindow={false}
+        height={400}
+        estimatedHeight={50}
+      >
+        {#snippet item(i)}
+          <button
+            onclick={() => (selectedInstance = instances[i].baseurl ?? '')}
+            class="flex flex-row gap-2 text-left py-2 items-center
+              h-16 max-h-16 min-h-16 overflow-hidden w-full cursor-pointer hover:bg-slate-50 hover:dark:bg-zinc-925 duration-100
+              p-4"
+          >
+            <Avatar
+              width={32}
+              url={instances[i].icon}
+              alt={instances[i].name}
+              class="shrink-0"
+            />
+            <div class="flex flex-col max-h-full w-full">
+              <span class="font-medium text-base whitespace-nowrap text-ellipsis">
+                {instances[i].name}
+              </span>
+              <span
+                class="whitespace-nowrap text-ellipsis overflow-hidden w-full"
+              >
+                {instances[i].desc}
+              </span>
+            </div>
+          </button>
+        {/snippet}
+      </VirtualList>
+    {:else}
+      <!-- Error state -->
+      <div class="flex items-center justify-center h-full text-slate-500 dark:text-zinc-400">
+        <p>{$t('toast.failFetchInstances')}</p>
+      </div>
+    {/if}
+  </div>
   <form
     class="flex flex-col gap-4"
     onsubmit={preventDefault(async () => {
       if (selectedInstance != '') {
         validating = true
 
-        if (await validateInstance(selectedInstance.trim())) {
+        if (await validateInstance(selectedInstance.trim(), DEFAULT_CLIENT_TYPE)) {
           goto(`/signup/${encodeURIComponent(selectedInstance)}`)
         } else {
           toast({

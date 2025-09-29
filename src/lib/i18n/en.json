@@ -22,14 +22,14 @@
             "app": "App",
             "settings": "Settings",
             "colorscheme": {
-                "label": "Color scheme",
+                "label": "Color Scheme",
                 "system": "System",
                 "dark": "Dark",
                 "light": "Light"
             },
             "theme": "Theme",
             "about": "About",
-            "source": "Source",
+            "source": "Source Code",
             "donate": "Donate",
             "instance": "Instance"
         },
@@ -52,9 +52,9 @@
         "notifications": "Notifications"
     },
     "account": {
-        "login": "Log in",
+        "login": "Log In",
         "logout": "Log out",
-        "signup": "Sign up",
+        "signup": "Sign Up",
         "accounts": "Accounts",
         "changeinstance": "Change instance",
         "resetColor": "Reset color",

@@ -68,36 +68,6 @@
       : $t('post.actions.more.markRead')}
   </MenuButton>
 {/if}
-<div class="flex flex-row">
-  <MenuButton
-    onclick={() => share()}
-    class={['flex-1', !post.post.local && 'rounded-r-lg']}
-    icon={Share}
-  >
-    {$t('post.actions.more.share')}
-  </MenuButton>
-  {#if !post.post.local}
-    <Menu>
-      {#snippet target(attachment)}
-        <Button
-          {@attach attachment}
-          aria-label={$t('post.actions.more.label')}
-          color="tertiary"
-          size="custom"
-          class="w-6 h-6 self-center"
-          data-autoclose="false"
-          icon={EllipsisHorizontal}
-        ></Button>
-      {/snippet}
-      <MenuButton onclick={() => share(true)} icon={GlobeAlt}>
-        {$t('filter.location.global')}
-      </MenuButton>
-      <MenuButton onclick={() => share(false)} icon={MapPin}>
-        {$t('filter.location.local')}
-      </MenuButton>
-    </Menu>
-  {/if}
-</div>
 {#if profile.current?.jwt}
   <MenuButton
     onclick={() => {

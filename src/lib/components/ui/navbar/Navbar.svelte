@@ -10,9 +10,11 @@
   import { LINKED_INSTANCE_URL } from '$lib/instance.svelte'
   import { Menu, Spinner } from 'mono-svelte'
   import {
+    ArrowLeftOnRectangle,
     Bars3,
     GlobeAlt,
     Icon,
+    Identification,
     MagnifyingGlass,
     PencilSquare,
     ServerStack,
@@ -36,13 +38,13 @@
 <nav
   class={[
     'w-full mx-auto z-50',
-    'lg:gap-5 gap-2 flex flex-row items-center p-2',
+    'lg:gap-5 gap-2 flex flex-row items-center p-2 pr-4',
     'box-border p-0.5 duration-150 @container',
     clazz,
   ]}
   {style}
 >
-  <div class="flex items-center gap-1">
+  <div class="flex items-center gap-1 hover:opacity-70 transition-opacity">
     <NavButton
       oncontextmenu={(e: Event) => {
         e.preventDefault()
@@ -72,9 +74,12 @@
       {/snippet}
     </NavButton>
     {#if !LINKED_INSTANCE_URL}
-      <span class="font-medium text-primary-900 dark:text-primary-100">
+      <a
+        href="/"
+        class="font-medium text-primary-900 dark:text-primary-100 cursor-pointer"
+      >
         RePhoton
-      </span>
+      </a>
     {/if}
   </div>
   <NavButton
@@ -109,47 +114,72 @@
       icon={ShieldCheck}
     />
   {/if}
-  <Menu placement="bottom">
-    {#snippet target(attachment)}
-      <button
-        {@attach attachment}
-        class="w-10 h-10 rounded-full border-slate-200 dark:border-zinc-700
-      transition-all bg-slate-50 dark:bg-zinc-900 relative
-      hover:bg-slate-200 dark:hover:bg-zinc-700 group cursor-pointer"
-        title={$t('profile.profile')}
-      >
-        {#if profile.current?.user}
+  {#if profile.current?.jwt && profile.current?.user}
+    <Menu placement="bottom">
+      {#snippet target(attachment)}
+        <button
+          {@attach attachment}
+          class="w-10 h-10 rounded-full
+        transition-all relative
+        hover:bg-slate-50 dark:hover:bg-zinc-900 group cursor-pointer"
+          title={$t('profile.profile')}
+        >
           <div
             class="w-full h-full aspect-square object-cover rounded-full grid place-items-center group-hover:scale-90 transition-transform group-active:scale-[85%]"
           >
             <Avatar
-              url={profile.current.user.local_user_view.person.avatar}
+              url={profile.current.user?.local_user_view.person.avatar}
               width={36}
-              alt={profile.current.user.local_user_view.person.name}
+              alt={profile.current.user?.local_user_view.person.name}
             />
           </div>
-        {:else}
-          <div class="w-full h-full grid place-items-center">
-            <Icon src={Bars3} micro size="18" />
-          </div>
+          {#if Math.max(...Object.values($notifications)) > 0}
+            <div
+              class="w-2 h-2 absolute top-0.5 right-0.5 bg-red-500 rounded-full"
+            ></div>
+          {/if}
+        </button>
+      {/snippet}
+      {#snippet children(open)}
+        {#if open}
+          {#await import('./Profile.svelte')}
+            <div class="p-8 w-full h-full grid place-items-center">
+              <Spinner width={20} />
+            </div>
+          {:then { default: Profile }}
+            <Profile />
+          {/await}
         {/if}
-        {#if Math.max(...Object.values($notifications)) > 0}
+      {/snippet}
+    </Menu>
+  {:else}
+    <Menu placement="bottom">
+      {#snippet target(attachment)}
+        <button
+          {@attach attachment}
+          class="w-10 h-10 rounded-full
+        transition-all relative
+        hover:bg-slate-50 dark:hover:bg-zinc-900 group cursor-pointer"
+          title={$t('account.login')}
+        >
           <div
-            class="w-2 h-2 absolute top-0.5 right-0.5 bg-red-500 rounded-full"
-          ></div>
-        {/if}
-      </button>
-    {/snippet}
-    {#snippet children(open)}
-      {#if open}
-        {#await import('./Profile.svelte')}
-          <div class="p-8 w-full h-full grid place-items-center">
-            <Spinner width={20} />
+            class="w-full h-full aspect-square object-cover rounded-full grid place-items-center group-hover:scale-90 transition-transform group-active:scale-[85%]"
+          >
+            <Icon src={Identification} size="20" />
           </div>
-        {:then { default: Profile }}
-          <Profile />
-        {/await}
-      {/if}
-    {/snippet}
-  </Menu>
+        </button>
+      {/snippet}
+      {#snippet children(open)}
+        {#if open}
+          {#await import('./Profile.svelte')}
+            <div class="p-8 w-full h-full grid place-items-center">
+              <Spinner width={20} />
+            </div>
+          {:then { default: Profile }}
+            <Profile />
+          {/await}
+        {/if}
+      {/snippet}
+    </Menu>
+  {/if}
 </nav>
