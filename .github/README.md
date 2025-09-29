@@ -3,7 +3,7 @@
 
 <picture>
     <source media="(prefers-color-scheme: dark)" srcset="https://files.catbox.moe/fnyzb8.webp">
-    <!-- <img alt="Light theme screenshot" src="https://files.catbox.moe/3wdydv.png" width="100%"> -->
+    <img alt="Light theme screenshot" src="https://files.catbox.moe/3wdydv.png" width="100%">
 </picture>
 
 # RePhoton
