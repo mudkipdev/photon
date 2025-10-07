@@ -14,14 +14,14 @@
   } from '$lib/components/lemmy/post'
   import Markdown from '$lib/components/markdown/Markdown.svelte'
   import EndPlaceholder from '$lib/components/ui/EndPlaceholder.svelte'
-  import Expandable from '$lib/components/ui/Expandable.svelte'
+  import Fixate from '$lib/components/ui/Fixate.svelte'
   import Placeholder from '$lib/components/ui/Placeholder.svelte'
   import { publishedToDate } from '$lib/components/util/date.js'
   import FormattedNumber from '$lib/components/util/FormattedNumber.svelte'
   import { t } from '$lib/i18n/translations.js'
   import { resumables } from '$lib/lemmy/item.js'
   import { settings } from '$lib/settings.svelte.js'
-  import { Button, toast } from 'mono-svelte'
+  import { Button, Expandable, toast } from 'mono-svelte'
   import { onMount } from 'svelte'
   import {
     ArrowRight,
@@ -217,13 +217,9 @@
 </article>
 {#await data.data.value.comments then comments}
   {#if data.data.value.params.thread.showContext || data.data.value.params.thread.singleThread}
-    <div
-      class="sticky mx-auto z-50 max-w-md min-w-0 flex flex-col items-center overflow-auto gap-1
-    bg-slate-50/50 dark:bg-zinc-900/50 backdrop-blur-xl border border-slate-200/50 dark:border-zinc-800/50
-    p-1 rounded-full justify-between top-6 lg:top-22 my-4"
-    >
+    <Fixate placement="top">
       <Button
-        color="none"
+        color="primary"
         rounding="pill"
         {loading}
         disabled={loading}
@@ -235,7 +231,7 @@
           : data.data.value.params.thread.singleThread
             ? postLink(data.data.value.post.post)
             : undefined}
-        class="hover:bg-white/50 dark:hover:bg-zinc-800/30"
+        class="w-max mx-auto sticky lg:top-20 z-50"
       >
         {data.data.value.params.thread.showContext
           ? $t('routes.post.thread.context')
@@ -244,7 +240,7 @@
           <Icon src={ArrowRight} size="16" micro />
         {/snippet}
       </Button>
-    </div>
+    </Fixate>
   {/if}
 {/await}
 <section class="flex flex-col gap-2 w-full" id="comments">
