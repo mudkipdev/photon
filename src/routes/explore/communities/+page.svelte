@@ -16,9 +16,7 @@
   let { data } = $props()
 
   let showTop = $derived(
-    (data.query ?? '' != '') &&
-      data.communities.value.length > 0 &&
-      data.page == 1,
+    (data.query ?? '' != '') && data.communities.length > 0 && data.page == 1,
   )
 </script>
 
@@ -41,7 +39,7 @@
   </div>
 {:else}
   <ul class="flex flex-col h-full">
-    {#if data.communities.value.length == 0}
+    {#if data.communities.length == 0}
       <Placeholder
         icon={QuestionMarkCircle}
         title={$t('routes.search.noResults.title')}
@@ -56,7 +54,7 @@
       <div
         class="grid md:grid-cols-2 lg:grid-cols-3 gap-4 items-center mb-6 border-0!"
       >
-        {#each data.communities.value.slice(0, 3) as community, index (community.community.id)}
+        {#each data.communities.slice(0, 3) as community, index (community.community.id)}
           <div
             class="h-full"
             in:fly|global={{
@@ -79,13 +77,13 @@
       </div>
     {/if}
 
-    {#if data.communities.value.slice(showTop ? 3 : 0).length > 0}
+    {#if data.communities.slice(showTop ? 3 : 0).length > 0}
       <EndPlaceholder size="lg" margin="md">
         {$t('routes.search.other')}
       </EndPlaceholder>
     {/if}
-    {#if data.communities.value}
-      {@const sliced = data.communities.value.slice(showTop ? 3 : 0)}
+    {#if data.communities}
+      {@const sliced = data.communities.slice(showTop ? 3 : 0)}
       <CommonList items={sliced}>
         {#snippet item(community)}
           <CommunityItem
@@ -98,7 +96,7 @@
     {/if}
   </ul>
 {/if}
-{#if data.communities.value.length > 0}
+{#if data.communities.length > 0}
   <Fixate placement="bottom">
     <Pageination
       page={Number(page.url.searchParams.get('page')) || 1}

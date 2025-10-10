@@ -10,7 +10,10 @@ import type {
   GetPersonDetailsResponse,
   GetPost,
   GetPosts,
+  ListCommunitiesResponse,
+  ListingType,
   PostView,
+  SortType,
   TopicView,
 } from '$lib/client/types'
 import { recursiveEqual } from '$lib/util.svelte'
@@ -28,12 +31,9 @@ export class Feed<Params, Response> {
   }
 
   async load(params: Params) {
-    if (
-      this.#lastParams &&
-      params &&
-      !recursiveEqual<Params>(params, this.#lastParams)
-    )
+    if (!recursiveEqual(params, this.#lastParams)) {
       this.#data = undefined
+    }
     this.#lastParams = params
 
     if (this.#data == null) this.#data = await this.#fetch(params)
@@ -56,7 +56,7 @@ export interface FeedTypes {
     {
       posts: PostView[]
       next_page?: string
-      params: GetPostss & { page_cursor: string }
+      params: GetPosts & { page_cursor: string }
       client: {
         itemHeights?: (number | null)[]
         lastSeen?: number
@@ -103,6 +103,15 @@ export interface FeedTypes {
         }
       }
     },
+  ]
+  '/explore/communities': [
+    {
+      type: ListingType
+      sort: SortType
+      query: string
+      page: number
+    },
+    ListCommunitiesResponse,
   ]
   '/f/[id]': [
     GetPosts,
