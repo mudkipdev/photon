@@ -14,6 +14,7 @@
   } from '$lib/components/lemmy/post'
   import Markdown from '$lib/components/markdown/Markdown.svelte'
   import EndPlaceholder from '$lib/components/ui/EndPlaceholder.svelte'
+  import Expandable from '$lib/components/ui/Expandable.svelte'
   import Fixate from '$lib/components/ui/generic/Fixate.svelte'
   import Placeholder from '$lib/components/ui/Placeholder.svelte'
   import { publishedToDate } from '$lib/components/util/date.js'
@@ -21,7 +22,7 @@
   import { t } from '$lib/i18n/translations.js'
   import { resumables } from '$lib/lemmy/item.js'
   import { settings } from '$lib/settings.svelte.js'
-  import { Button, Expandable, toast } from 'mono-svelte'
+  import { Button, toast } from 'mono-svelte'
   import { onMount } from 'svelte'
   import {
     ArrowRight,

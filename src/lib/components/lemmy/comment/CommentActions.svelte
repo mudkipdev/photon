@@ -2,11 +2,7 @@
   import { profile } from '$lib/auth.svelte.js'
   import type { CommentView } from '$lib/client/types'
   import CommentModerationMenu from '$lib/components/lemmy/moderation/CommentModerationMenu.svelte'
-  import {
-    amMod,
-    isAdmin,
-    report,
-  } from '$lib/components/lemmy/moderation/moderation.js'
+  import { report } from '$lib/components/lemmy/moderation/moderation.js'
   import { t } from '$lib/i18n/translations'
   import { deleteItem, save } from '$lib/lemmy/contentview.js'
   import { settings } from '$lib/settings.svelte'
@@ -16,6 +12,7 @@
     BookmarkSlash,
     ChatBubbleOvalLeft,
     Flag,
+    Icon,
     PencilSquare,
     Share,
     Trash,
@@ -74,7 +71,7 @@
       {$t('comment.reply')}
     </Button>
   {/if}
-  {#if profile.current?.user && (amMod(profile.current?.user, comment.community) || isAdmin(profile.current.user))}
+  {#if profile.current?.jwt && (profile.isMod(comment.community) || profile.isAdmin)}
     <CommentModerationMenu bind:item={comment} />
   {/if}
   {#if profile.current?.jwt}

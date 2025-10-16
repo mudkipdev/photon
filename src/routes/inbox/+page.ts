@@ -1,4 +1,4 @@
-import { notifications, profile } from '$lib/auth.svelte'
+import { notifications, profile } from '$lib/auth.svelte.js'
 import { publishedToDate } from '$lib/components/util/date.js'
 import { getClient } from '$lib/client/lemmy.svelte'
 import {
