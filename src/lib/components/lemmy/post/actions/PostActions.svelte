@@ -1,9 +1,5 @@
 <script lang="ts">
   import { profile } from '$lib/auth.svelte.js'
-  import {
-    amMod,
-    isAdmin,
-  } from '$lib/components/lemmy/moderation/moderation.js'
   import { publishedToDate } from '$lib/components/util/date'
   import FormattedNumber from '$lib/components/util/FormattedNumber.svelte'
   import { t } from '$lib/i18n/translations'
@@ -165,7 +161,7 @@
         icon={BugAnt}
       ></Button>
     {/if}
-    {#if profile.current?.user && (amMod(profile.current.user, post.community) || isAdmin(profile.current.user))}
+    {#if profile.current?.jwt && (profile.isMod(post.community) || profile.isAdmin)}
       {#await import('$lib/components/lemmy/moderation/ModerationMenu.svelte') then { default: ModerationMenu }}
         <ModerationMenu bind:item={post}>
           {#snippet target(attachment, acting)}
@@ -187,7 +183,7 @@
     <Button
       onclick={() => share()}
       size="custom"
-      class="{buttonSquare} {settings.debugInfo || (profile.current?.user && (amMod(profile.current.user, post.community) || isAdmin(profile.current.user))) ? 'rounded-none' : 'rounded-l-md'} {profile.current?.jwt ? 'border-r-0' : 'rounded-r-md'}"
+      class="{buttonSquare} {settings.debugInfo || (profile.current?.jwt && (profile.isMod(post.community) || profile.isAdmin)) ? 'rounded-none' : 'rounded-l-md'} {profile.current?.jwt ? 'border-r-0' : 'rounded-r-md'}"
       color="ghost"
       rounding="none"
       title={$t('post.actions.more.share')}

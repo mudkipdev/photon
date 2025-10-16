@@ -1,10 +1,6 @@
 <script lang="ts">
   import { notifications, profile } from '$lib/auth.svelte.js'
   import { site } from '$lib/client/lemmy.svelte'
-  import {
-    amModOfAny,
-    isAdmin,
-  } from '$lib/components/lemmy/moderation/moderation.js'
   import Avatar from '$lib/components/ui/Avatar.svelte'
   import { t } from '$lib/i18n/translations'
   import { LINKED_INSTANCE_URL } from '$lib/instance.svelte'
@@ -97,7 +93,7 @@
     alwaysShowIcon
   />
   <div class="flex-1"></div>
-  {#if profile.current?.user && isAdmin(profile.current.user)}
+  {#if profile.isAdmin}
     <NavButton
       href="/admin"
       label={$t('nav.admin')}
@@ -106,7 +102,7 @@
       isSelectedFilter={(path) => path.startsWith('/admin')}
     />
   {/if}
-  {#if amModOfAny(profile.current?.user)}
+  {#if profile.isMod()}
     <NavButton
       href="/moderation"
       label={$t('nav.moderation')}

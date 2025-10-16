@@ -14,7 +14,7 @@
   } from '$lib/components/lemmy/post'
   import Markdown from '$lib/components/markdown/Markdown.svelte'
   import EndPlaceholder from '$lib/components/ui/EndPlaceholder.svelte'
-  import Fixate from '$lib/components/ui/Fixate.svelte'
+  import Fixate from '$lib/components/ui/generic/Fixate.svelte'
   import Placeholder from '$lib/components/ui/Placeholder.svelte'
   import { publishedToDate } from '$lib/components/util/date.js'
   import FormattedNumber from '$lib/components/util/FormattedNumber.svelte'
